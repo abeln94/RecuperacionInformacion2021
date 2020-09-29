@@ -112,7 +112,7 @@ public final class SpanishAnalyzer2 extends StopwordAnalyzerBase {
     protected TokenStreamComponents createComponents(String fieldName) {
         final Tokenizer source = new StandardTokenizer();
         TokenStream result = new LowerCaseFilter(source);
-        result = new StopFilter(result, stopwords);
+        result = new StopFilter(result, createStopSet2());
         if (!stemExclusionSet.isEmpty())
             result = new SetKeywordMarkerFilter(result, stemExclusionSet);
         result = new SnowballFilter(result, "Spanish");
@@ -122,5 +122,11 @@ public final class SpanishAnalyzer2 extends StopwordAnalyzerBase {
     @Override
     protected TokenStream normalize(String fieldName, TokenStream in) {
         return new LowerCaseFilter(in);
+    }
+
+    public static CharArraySet createStopSet2() {
+        String[] stopWords = {"el", "la", "lo", "en"};
+        CharArraySet stopSet = StopFilter.makeStopSet(stopWords);
+        return stopSet;
     }
 }
