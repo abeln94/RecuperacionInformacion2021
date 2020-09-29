@@ -17,7 +17,6 @@
 
 
 import org.apache.lucene.analysis.*;
-import org.apache.lucene.analysis.es.SpanishLightStemFilter;
 import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
 import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
@@ -107,7 +106,7 @@ public final class SpanishAnalyzer2 extends StopwordAnalyzerBase {
      * built from an {@link StandardTokenizer} filtered with
      * {@link LowerCaseFilter}, {@link StopFilter}
      * , {@link SetKeywordMarkerFilter} if a stem exclusion set is
-     * provided and {@link SpanishLightStemFilter}.
+     * provided and {@link SnowballFilter}.
      */
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
@@ -116,7 +115,7 @@ public final class SpanishAnalyzer2 extends StopwordAnalyzerBase {
         result = new StopFilter(result, stopwords);
         if (!stemExclusionSet.isEmpty())
             result = new SetKeywordMarkerFilter(result, stemExclusionSet);
-        result = new SpanishLightStemFilter(result);
+        result = new SnowballFilter(result, "Spanish");
         return new TokenStreamComponents(source, result);
     }
 

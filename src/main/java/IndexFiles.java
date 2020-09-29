@@ -16,7 +16,6 @@
  */
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -85,7 +84,7 @@ public class IndexFiles {
             System.out.println("Indexing to directory '" + indexPath + "'...");
 
             Directory dir = FSDirectory.open(Paths.get(indexPath));
-            Analyzer analyzer = new SimpleAnalyzer();
+            Analyzer analyzer = new SpanishAnalyzer2();
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
             if (create) {
