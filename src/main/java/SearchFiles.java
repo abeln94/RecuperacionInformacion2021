@@ -186,6 +186,10 @@ public class SearchFiles {
                 } else {
                     System.out.println((i + 1) + ". " + "No path for this document");
                 }
+                System.out.println("  modified: " + doc.get("modified"));
+
+                // explain the scoring function
+                System.out.println(searcher.explain(query, hits[i].doc));
 
             }
 

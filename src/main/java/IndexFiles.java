@@ -27,6 +27,8 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -177,7 +179,8 @@ public class IndexFiles {
                     // year/month/day/hour/minutes/seconds, down the resolution you require.
                     // For example the long value 2011021714 would mean
                     // February 17, 2011, 2-3 PM.
-                    doc.add(new StoredField("modified", file.lastModified()));
+                    DateFormat dtFormat = SimpleDateFormat.getDateTimeInstance();
+                    doc.add(new StoredField("modified", dtFormat.format(file.lastModified())));
 
                     // Add the contents of the file to a field named "contents".  Specify a Reader,
                     // so that the text of the file is tokenized and indexed, but not stored.
