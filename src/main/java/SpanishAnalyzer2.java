@@ -22,6 +22,7 @@ import org.apache.lucene.analysis.snowball.SnowballFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
 import org.apache.lucene.util.IOUtils;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
@@ -112,7 +113,7 @@ public final class SpanishAnalyzer2 extends StopwordAnalyzerBase {
     protected TokenStreamComponents createComponents(String fieldName) {
         final Tokenizer source = new StandardTokenizer();
         TokenStream result = new LowerCaseFilter(source);
-        result = new StopFilter(result, createStopSet2());
+        result = new StopFilter(result, createStopSet3());
         if (!stemExclusionSet.isEmpty())
             result = new SetKeywordMarkerFilter(result, stemExclusionSet);
         result = new SnowballFilter(result, "Spanish");
@@ -128,5 +129,14 @@ public final class SpanishAnalyzer2 extends StopwordAnalyzerBase {
         String[] stopWords = {"el", "la", "lo", "en"};
         CharArraySet stopSet = StopFilter.makeStopSet(stopWords);
         return stopSet;
+    }
+
+    public static CharArraySet createStopSet3() {
+        try {
+            CharArraySet stopSet = WordlistLoader.getSnowballWordSet(new FileReader("spanish_stop.txt"));
+            return stopSet;
+        } catch (IOException ex) {
+            throw new RuntimeException("Unable to load default stopword set");
+        }
     }
 }
