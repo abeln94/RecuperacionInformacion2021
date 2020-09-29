@@ -24,7 +24,11 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.nio.file.Paths;
 import java.text.DateFormat;
@@ -182,11 +186,36 @@ public class IndexFiles {
                     DateFormat dtFormat = SimpleDateFormat.getDateTimeInstance();
                     doc.add(new StoredField("modified", dtFormat.format(file.lastModified())));
 
-                    // Add the contents of the file to a field named "contents".  Specify a Reader,
-                    // so that the text of the file is tokenized and indexed, but not stored.
-                    // Note that FileReader expects the file to be in UTF-8 encoding.
-                    // If that's not the case searching for special characters will fail.
-                    doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(fis, "UTF-8"))));
+                    try {
+                        // parse XML dom
+                        org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
+
+                        // add TextField
+                        for (String tag : new String[]{"title", "subject", "description", "creator", "publisher"}) {
+                            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
+                            for (int i = 0; i < list.getLength(); i++) {
+                                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
+                            }
+                        }
+
+                        // add StringField
+                        for (String tag : new String[]{"identifier", "type", "format", "language"}) {
+                            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
+                            for (int i = 0; i < list.getLength(); i++) {
+                                doc.add(new StringField(tag, list.item(i).getTextContent(), Field.Store.YES));
+                            }
+                        }
+
+                    } catch (ParserConfigurationException | SAXException e) {
+                        // error when parsing, add normal
+                        e.printStackTrace();
+
+                        // Add the contents of the file to a field named "contents".  Specify a Reader,
+                        // so that the text of the file is tokenized and indexed, but not stored.
+                        // Note that FileReader expects the file to be in UTF-8 encoding.
+                        // If that's not the case searching for special characters will fail.
+                        doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(fis, "UTF-8"))));
+                    }
 
                     if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
                         // New index, so we just add the document (no old document can be there):
