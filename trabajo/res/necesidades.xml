@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<informationNeeds>
+  <informationNeed>
+    <identifier>1</identifier>
+    <text>Texto de la consulta. En las siguientes necesidades de información hay algunos ejemplos orientados a buscar sobre una colección de artículos de informática.</text>
+  </informationNeed>
+  <informationNeed>
+    <identifier>2</identifier>
+    <text>¿Qué articulos existen sobre TSS (Time Sharing System), un sistema operativo para procesadores IBM?</text>
+  </informationNeed>
+  <informationNeed>
+    <identifier>3</identifier>
+    <text>Estoy interesado en mecanismos de comunicación entre procesos en entornos distribuidos. Preferiría ver descripciones de mecanismos completos,1 Recuperación de Información Trabajo de la asignatura con o sin implementaciones, pero no trabajos teóricos sobre un problema abstracto. Remote procedure calls y message-passing son ejemplos de mis intereses.</text>
+  </informationNeed>
+</informationNeeds>
