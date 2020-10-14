@@ -2,15 +2,15 @@
 <informationNeeds>
   <informationNeed>
     <identifier>1</identifier>
-    <text>Quiero saber cuales son los temas o campos más y menos tratados.</text>
+    <text>¿Hay algún artículo que me permita averiguar qué problemas tiene el sistema sanitario aragonés y qué medidas pueden ser tomadas como solución?</text>
   </informationNeed>
   <informationNeed>
     <identifier>2</identifier>
-    <text>¿Qué trabajos han sido dirigidos por tres o más directores? (sin contar al alumno)</text>
+    <text>¿Qué trabajos han sido dirigidos por cinco o más directores? (sin contar al alumno)</text>
   </informationNeed>
   <informationNeed>
     <identifier>3</identifier>
-    <text>Me interesa hallar relaciones entre la geología y derecho (leyes), si es que hay alguna.</text>
+    <text>Aplicaciones de las redes de petri en el modelaje de sistemas informáticos distribuidos.</text>
   </informationNeed>
   <informationNeed>
     <identifier>4</identifier>
@@ -18,6 +18,6 @@
   </informationNeed>
   <informationNeed>
     <identifier>5</identifier>
-    <text>Circuitos caóticos y criptografía, propiedades y aplicaciones.</text>
+    <text>Quiero saber cuales son los temas o campos más y menos tratados.</text>
   </informationNeed>
 </informationNeeds>
