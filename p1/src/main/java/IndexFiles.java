@@ -205,6 +205,22 @@ public class IndexFiles {
                             }
                         }
 
+                        // add Geographical coordinates
+                        NodeList lowerCorner = xmlDoc.getElementsByTagName("ows:LowerCorner");
+                        NodeList upperCorner = xmlDoc.getElementsByTagName("ows:UpperCorner");
+                        if (lowerCorner.getLength() > 0 && upperCorner.getLength() > 0) {
+                            // data exists
+                            String[] xMin_yMin = lowerCorner.item(0).getTextContent().split(" ");
+
+                            String[] xMax_yMax = upperCorner.item(0).getTextContent().split(" ");
+
+                            doc.add(new DoublePoint("west", Double.parseDouble(xMin_yMin[0])));
+                            doc.add(new DoublePoint("east", Double.parseDouble(xMax_yMax[0])));
+                            doc.add(new DoublePoint("south", Double.parseDouble(xMin_yMin[1])));
+                            doc.add(new DoublePoint("north", Double.parseDouble(xMax_yMax[1])));
+
+                        }
+
                     } catch (ParserConfigurationException | SAXException e) {
                         // error when parsing, add normal
                         e.printStackTrace();
