@@ -20,6 +20,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.DoublePoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
@@ -28,6 +29,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
@@ -37,8 +39,14 @@ import java.util.Date;
  */
 public class SearchFiles {
 
-    private SearchFiles() {
-    }
+    private static String field = "contents";
+    private static String index = "index";
+    private static String queries = null;
+    private static int repeat = 0;
+    private static boolean raw = false;
+    private static String queryString = null;
+    private static int hitsPerPage = 10;
+
 
     /**
      * Simple command-line based search demo.
@@ -50,14 +58,6 @@ public class SearchFiles {
             System.out.println(usage);
             System.exit(0);
         }
-
-        String index = "index";
-        String field = "contents";
-        String queries = null;
-        int repeat = 0;
-        boolean raw = false;
-        String queryString = null;
-        int hitsPerPage = 10;
 
         for (int i = 0; i < args.length; i++) {
             if ("-index".equals(args[i])) {
@@ -87,68 +87,148 @@ public class SearchFiles {
             }
         }
 
-        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
-        IndexSearcher searcher = new IndexSearcher(reader);
-        Analyzer analyzer = new SpanishAnalyzer2();
 
-        BufferedReader in = null;
-        if (queries != null) {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream(queries), "UTF-8"));
-        } else {
-            in = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
+        SearchFiles app = new SearchFiles();
+
+        if (queryString != null) {
+            // input string
+            if (repeat > 0) {
+                // repeat & time as benchmark
+                System.out.println("Time: " + app.benchmarkSearch(queryString) + "ms");
+                return;
+            }
+
+            // run that string
+            System.out.println(Arrays.toString(app.search(queryString)));
+            return;
         }
-        QueryParser parser = new QueryParser(field, analyzer);
-        while (true) {
-            if (queries == null && queryString == null) {                        // prompt the user
+
+        if (queries != null) {
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(queries), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = in.readLine()) != null) {
+                    System.out.print(line + ": ");
+                    System.out.println(Arrays.toString(app.search(line)));
+                }
+            }
+            return;
+        }
+
+        app.interactiveSearch();
+
+    }
+
+    // ------------------------- app -------------------------
+
+    private final IndexSearcher searcher;
+    private final QueryParser parser;
+
+    public SearchFiles() throws Exception {
+        // init parser
+        IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
+        Analyzer analyzer = new SpanishAnalyzer2();
+        parser = new QueryParser(field, analyzer);
+
+        // init searcher
+        searcher = new IndexSearcher(reader);
+//        searcher.setSimilarity(new ClassicSimilarity()); // from the teacher
+    }
+
+    // ------------------------- search -------------------------
+
+    public String[] search(String line) throws Exception {
+        if (line == null) {
+            return null;
+        }
+
+        line = line.trim();
+        if (line.length() == 0) {
+            return null;
+        }
+
+        return returnDetailsSearch(searcher, parseQuery(line));
+    }
+
+    public void interactiveSearch() throws Exception {
+
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+
+            while (true) {
+                // prompt the user
                 System.out.println("Enter query: ");
+
+                String line = in.readLine();
+
+                if (line == null) {
+                    break;
+                }
+
+                line = line.trim();
+                if (line.length() == 0) {
+                    break;
+                }
+
+                Query query = parseQuery(line);
+
+                System.out.println("Searching for: " + query.toString(field));
+
+                showPaginatedSearch(in, query);
+
             }
+        }
+    }
 
-            String line = queryString != null ? queryString : in.readLine();
+    public long benchmarkSearch(String line) throws Exception {
+        Query query = parseQuery(line);
 
-            if (line == null || line.length() == -1) {
-                break;
-            }
+        Date start = new Date();
+        for (int i = 0; i < repeat; i++) {
+            searcher.search(query, 100);
+        }
+        Date end = new Date();
+        return end.getTime() - start.getTime();
+    }
 
-            line = line.trim();
-            if (line.length() == 0) {
-                break;
-            }
+    // ------------------------- query -------------------------
 
-            // get query
-            Query query;
-            if (line.startsWith("spatial:")) {
+    public Query parseQuery(String line) throws ParseException {
+        // get query
+        BooleanQuery.Builder builder = new BooleanQuery.Builder();
+
+        for (String part : line.split(" ")) {
+
+
+            if (part.startsWith("spatial:")) {
                 // spatial query
-                double[] west_east_south_north = Arrays.stream(line.substring(8/*len('spatial:')*/).split(",")).mapToDouble(Double::parseDouble).toArray();
+                double[] west_east_south_north = Arrays.stream(part.substring(8/*len('spatial:')*/).split(",")).mapToDouble(Double::parseDouble).toArray();
 
-                query = new BooleanQuery.Builder()
-                        .add(DoublePoint.newRangeQuery(IndexFiles.WEST, Double.NEGATIVE_INFINITY, west_east_south_north[1]), BooleanClause.Occur.MUST)
-                        .add(DoublePoint.newRangeQuery(IndexFiles.EAST, west_east_south_north[0], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
-                        .add(DoublePoint.newRangeQuery(IndexFiles.SOUTH, Double.NEGATIVE_INFINITY, west_east_south_north[3]), BooleanClause.Occur.MUST)
-                        .add(DoublePoint.newRangeQuery(IndexFiles.NORTH, west_east_south_north[2], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
-                        .build();
+                builder.add(new BooleanQuery.Builder()
+                                .add(DoublePoint.newRangeQuery(IndexFiles.WEST, Double.NEGATIVE_INFINITY, west_east_south_north[1]), BooleanClause.Occur.MUST)
+                                .add(DoublePoint.newRangeQuery(IndexFiles.EAST, west_east_south_north[0], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
+                                .add(DoublePoint.newRangeQuery(IndexFiles.SOUTH, Double.NEGATIVE_INFINITY, west_east_south_north[3]), BooleanClause.Occur.MUST)
+                                .add(DoublePoint.newRangeQuery(IndexFiles.NORTH, west_east_south_north[2], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
+                                .build()
+                        , BooleanClause.Occur.SHOULD);
+
             } else {
                 // text query
-                query = parser.parse(line);
-            }
-
-            System.out.println("Searching for: " + query.toString(field));
-
-            if (repeat > 0) {                           // repeat & time as benchmark
-                Date start = new Date();
-                for (int i = 0; i < repeat; i++) {
-                    searcher.search(query, 100);
-                }
-                Date end = new Date();
-                System.out.println("Time: " + (end.getTime() - start.getTime()) + "ms");
-            }
-
-            doPagingSearch(in, searcher, query, hitsPerPage, raw, queries == null && queryString == null);
-
-            if (queryString != null) {
-                break;
+                builder.add(parser.parse(part), BooleanClause.Occur.SHOULD);
             }
         }
-        reader.close();
+
+        return builder.build();
+    }
+
+    public static String[] returnDetailsSearch(IndexSearcher searcher, Query query) throws Exception {
+        return Arrays.stream(searcher.search(query, Integer.MAX_VALUE).scoreDocs).map(doc -> {
+            try {
+                String path = searcher.doc(doc.doc).get("path");
+                return path.substring(path.lastIndexOf("\\") + 1).substring(0, 2);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "??";
+            }
+        }).toArray(String[]::new);
     }
 
     /**
@@ -160,8 +240,7 @@ public class SearchFiles {
      * to fill 5 result pages. If the user wants to page beyond this limit, then the query
      * is executed another time and all hits are collected.
      */
-    public static void doPagingSearch(BufferedReader in, IndexSearcher searcher, Query query,
-                                      int hitsPerPage, boolean raw, boolean interactive) throws IOException {
+    public void showPaginatedSearch(BufferedReader in, Query query) throws IOException {
 
         // Collect enough docs to show 5 pages
         TopDocs results = searcher.search(query, 5 * hitsPerPage);
@@ -207,7 +286,7 @@ public class SearchFiles {
 
             }
 
-            if (!interactive || end == 0) {
+            if (end == 0) {
                 break;
             }
 
