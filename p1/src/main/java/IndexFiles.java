@@ -42,6 +42,11 @@ import java.util.Date;
  */
 public class IndexFiles {
 
+    public static final String WEST = "west";
+    public static final String EAST = "east";
+    public static final String SOUTH = "south";
+    public static final String NORTH = "north";
+
     private IndexFiles() {
     }
 
@@ -214,10 +219,10 @@ public class IndexFiles {
 
                             String[] xMax_yMax = upperCorner.item(0).getTextContent().split(" ");
 
-                            doc.add(new DoublePoint("west", Double.parseDouble(xMin_yMin[0])));
-                            doc.add(new DoublePoint("east", Double.parseDouble(xMax_yMax[0])));
-                            doc.add(new DoublePoint("south", Double.parseDouble(xMin_yMin[1])));
-                            doc.add(new DoublePoint("north", Double.parseDouble(xMax_yMax[1])));
+                            doc.add(new DoublePoint(WEST, Double.parseDouble(xMin_yMin[0])));
+                            doc.add(new DoublePoint(EAST, Double.parseDouble(xMax_yMax[0])));
+                            doc.add(new DoublePoint(SOUTH, Double.parseDouble(xMin_yMin[1])));
+                            doc.add(new DoublePoint(NORTH, Double.parseDouble(xMax_yMax[1])));
 
                         }
 

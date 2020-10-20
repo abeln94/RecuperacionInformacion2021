@@ -17,13 +17,11 @@
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.DoublePoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
 
 import java.io.BufferedReader;
@@ -31,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -115,7 +114,23 @@ public class SearchFiles {
                 break;
             }
 
-            Query query = parser.parse(line);
+            // get query
+            Query query;
+            if (line.startsWith("spatial:")) {
+                // spatial query
+                double[] west_east_south_north = Arrays.stream(line.substring(8/*len('spatial:')*/).split(",")).mapToDouble(Double::parseDouble).toArray();
+
+                query = new BooleanQuery.Builder()
+                        .add(DoublePoint.newRangeQuery(IndexFiles.WEST, Double.NEGATIVE_INFINITY, west_east_south_north[1]), BooleanClause.Occur.MUST)
+                        .add(DoublePoint.newRangeQuery(IndexFiles.EAST, west_east_south_north[0], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
+                        .add(DoublePoint.newRangeQuery(IndexFiles.SOUTH, Double.NEGATIVE_INFINITY, west_east_south_north[3]), BooleanClause.Occur.MUST)
+                        .add(DoublePoint.newRangeQuery(IndexFiles.NORTH, west_east_south_north[2], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
+                        .build();
+            } else {
+                // text query
+                query = parser.parse(line);
+            }
+
             System.out.println("Searching for: " + query.toString(field));
 
             if (repeat > 0) {                           // repeat & time as benchmark
