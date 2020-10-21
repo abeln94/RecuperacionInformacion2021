@@ -104,6 +104,7 @@ public class SearchFiles {
         }
 
         if (queries != null) {
+            // run multiple queries simultaneously
             try (BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(queries), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = in.readLine()) != null) {
@@ -114,14 +115,15 @@ public class SearchFiles {
             return;
         }
 
+        // run interactive
         app.interactiveSearch();
 
     }
 
     // ------------------------- app -------------------------
 
-    private final IndexSearcher searcher;
     private final QueryParser parser;
+    private final IndexSearcher searcher;
 
     public SearchFiles() throws Exception {
         // init parser
@@ -136,6 +138,12 @@ public class SearchFiles {
 
     // ------------------------- search -------------------------
 
+    /**
+     * Performs a search from a input text
+     *
+     * @param line from this text
+     * @return and returns the matching docs identifiers
+     */
     public String[] search(String line) throws Exception {
         if (line == null) {
             return null;
@@ -146,9 +154,12 @@ public class SearchFiles {
             return null;
         }
 
-        return returnDetailsSearch(searcher, parseQuery(line));
+        return returnDetailsSearch(parseQuery(line));
     }
 
+    /**
+     * Asjks the user for a serach text, searches, and repeats
+     */
     public void interactiveSearch() throws Exception {
 
         try (BufferedReader in = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
@@ -178,6 +189,12 @@ public class SearchFiles {
         }
     }
 
+    /**
+     * Benchmarks @repeat times
+     *
+     * @param line this search text
+     * @return adn returns the total time
+     */
     public long benchmarkSearch(String line) throws Exception {
         Query query = parseQuery(line);
 
@@ -191,6 +208,12 @@ public class SearchFiles {
 
     // ------------------------- query -------------------------
 
+    /**
+     * Converts
+     *
+     * @param line this search text
+     * @return to a query
+     */
     public Query parseQuery(String line) throws ParseException {
         // get query
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
@@ -219,7 +242,13 @@ public class SearchFiles {
         return builder.build();
     }
 
-    public static String[] returnDetailsSearch(IndexSearcher searcher, Query query) throws Exception {
+    /**
+     * Performs a search
+     *
+     * @param query from this query
+     * @return and returns a list of the results as 2-digits code
+     */
+    public String[] returnDetailsSearch(Query query) throws Exception {
         return Arrays.stream(searcher.search(query, Integer.MAX_VALUE).scoreDocs).map(doc -> {
             try {
                 String path = searcher.doc(doc.doc).get("path");
