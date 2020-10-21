@@ -33,6 +33,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Simple command-line based search demo.
@@ -215,29 +217,31 @@ public class SearchFiles {
      * @return to a query
      */
     public Query parseQuery(String line) throws ParseException {
-        // get query
+        // prepare query
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
 
-        for (String part : line.split(" ")) {
+        // get and remove the spatial part (if found)
+        Pattern match = Pattern.compile("spatial:([^ ]*)");
+        Matcher matcher = match.matcher(line);
+        while (matcher.find()) {
+            String part = matcher.group(1);
+            // spatial query
+            double[] west_east_south_north = Arrays.stream(part.split(",")).mapToDouble(Double::parseDouble).toArray();
 
-
-            if (part.startsWith("spatial:")) {
-                // spatial query
-                double[] west_east_south_north = Arrays.stream(part.substring(8/*len('spatial:')*/).split(",")).mapToDouble(Double::parseDouble).toArray();
-
-                builder.add(new BooleanQuery.Builder()
-                                .add(DoublePoint.newRangeQuery(IndexFiles.WEST, Double.NEGATIVE_INFINITY, west_east_south_north[1]), BooleanClause.Occur.MUST)
-                                .add(DoublePoint.newRangeQuery(IndexFiles.EAST, west_east_south_north[0], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
-                                .add(DoublePoint.newRangeQuery(IndexFiles.SOUTH, Double.NEGATIVE_INFINITY, west_east_south_north[3]), BooleanClause.Occur.MUST)
-                                .add(DoublePoint.newRangeQuery(IndexFiles.NORTH, west_east_south_north[2], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
-                                .build()
-                        , BooleanClause.Occur.SHOULD);
-
-            } else {
-                // text query
-                builder.add(parser.parse(part), BooleanClause.Occur.SHOULD);
-            }
+            builder.add(new BooleanQuery.Builder()
+                            .add(DoublePoint.newRangeQuery(IndexFiles.WEST, Double.NEGATIVE_INFINITY, west_east_south_north[1]), BooleanClause.Occur.MUST)
+                            .add(DoublePoint.newRangeQuery(IndexFiles.EAST, west_east_south_north[0], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
+                            .add(DoublePoint.newRangeQuery(IndexFiles.SOUTH, Double.NEGATIVE_INFINITY, west_east_south_north[3]), BooleanClause.Occur.MUST)
+                            .add(DoublePoint.newRangeQuery(IndexFiles.NORTH, west_east_south_north[2], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
+                            .build()
+                    , BooleanClause.Occur.SHOULD);
         }
+        line = matcher.replaceAll("");
+
+
+        // the rest is a text query
+        if (!line.isEmpty())
+            builder.add(parser.parse(line), BooleanClause.Occur.SHOULD);
 
         return builder.build();
     }
