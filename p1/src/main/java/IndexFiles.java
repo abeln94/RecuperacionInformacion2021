@@ -213,17 +213,23 @@ public class IndexFiles {
                         // add Geographical coordinates
                         NodeList lowerCorner = xmlDoc.getElementsByTagName("ows:LowerCorner");
                         NodeList upperCorner = xmlDoc.getElementsByTagName("ows:UpperCorner");
-                        if (lowerCorner.getLength() > 0 && upperCorner.getLength() > 0) {
-                            // data exists
-                            String[] xMin_yMin = lowerCorner.item(0).getTextContent().split(" ");
-
-                            String[] xMax_yMax = upperCorner.item(0).getTextContent().split(" ");
+                        for (int i = 0; i < Math.min(lowerCorner.getLength(), upperCorner.getLength()); ++i) {
+                            String[] xMin_yMin = lowerCorner.item(i).getTextContent().split(" ");
+                            String[] xMax_yMax = upperCorner.item(i).getTextContent().split(" ");
 
                             doc.add(new DoublePoint(WEST, Double.parseDouble(xMin_yMin[0])));
                             doc.add(new DoublePoint(EAST, Double.parseDouble(xMax_yMax[0])));
                             doc.add(new DoublePoint(SOUTH, Double.parseDouble(xMin_yMin[1])));
                             doc.add(new DoublePoint(NORTH, Double.parseDouble(xMax_yMax[1])));
+                        }
 
+                        // add date elements
+                        for (String tag : new String[]{"issued", "created"}) {
+                            NodeList list = xmlDoc.getElementsByTagName("dcterms:" + tag);
+                            for (int i = 0; i < list.getLength(); i++) {
+                                // removes all non-digit elements
+                                doc.add(new StringField(tag, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
+                            }
                         }
 
                     } catch (ParserConfigurationException | SAXException e) {
