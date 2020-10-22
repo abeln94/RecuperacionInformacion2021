@@ -33,6 +33,8 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Index all text files under a directory.
@@ -46,6 +48,8 @@ public class IndexFiles {
     public static final String EAST = "east";
     public static final String SOUTH = "south";
     public static final String NORTH = "north";
+    public static final String BEGIN = "begin";
+    public static final String END = "end";
 
     private IndexFiles() {
     }
@@ -232,6 +236,19 @@ public class IndexFiles {
                             }
                         }
 
+                        // add temporal element
+                        // DOC: <dcterms:temporal>begin=2002-03-01; end=2004-08-31;</dcterms:temporal>
+                        // INDEX: begin=20020301 end=20040831
+                        NodeList list = xmlDoc.getElementsByTagName("dcterms:temporal");
+                        for (int i = 0; i < list.getLength(); i++) {
+                            Matcher p = Pattern.compile("begin=([^;]*);\\s*end=([^;]*);").matcher(list.item(i).getTextContent());
+                            while (p.find()) {
+                                // removes all non-digit elements
+                                doc.add(new DoublePoint(BEGIN, Double.parseDouble(p.group(1).replaceAll("[^\\d]", ""))));
+                                doc.add(new DoublePoint(END, Double.parseDouble(p.group(2).replaceAll("[^\\d]", ""))));
+                            }
+                        }
+
                     } catch (ParserConfigurationException | SAXException e) {
                         // error when parsing, add normal
                         e.printStackTrace();
@@ -254,6 +271,8 @@ public class IndexFiles {
                         System.out.println("updating " + file);
                         writer.updateDocument(new Term("path", file.getPath()), doc);
                     }
+                    // debug
+                    doc.getFields().forEach(f -> System.out.println("    " + f.name() + ": " + f.toString()));
 
                 } finally {
                     fis.close();

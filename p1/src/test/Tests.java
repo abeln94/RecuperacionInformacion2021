@@ -24,7 +24,8 @@ public class Tests {
         test("issued:[19890101 TO 19950101]", "01,02,20,24,27");
         test("issued:19940101", "01");
 
-        System.out.println("all correct");
+        System.out.println();
+        System.out.println("All correct");
     }
 
     static void test(String query, String expectedResult) throws Exception {
