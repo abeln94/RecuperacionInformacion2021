@@ -1,0 +1,38 @@
+
+
+
+CAMPO -             Descipción -                            Idea de uso -                                                       Clase field
+<dc:contributor>    Profesor: Apellido(s), nombre           Ponderar altamente si se consulta un nombre             
+                    Aparece varias veces por doc.
+
+<dc:creator>        Alumno: Apellido(s), nombre             Ponderar altamente si se consulta un nombre
+
+<dc:date>           Fecha(Año)                              Ponderar alto tambien si consultan fechas de TFG
+                                                            Algunas consultas tienen rangos de años, expandirlas
+
+<dc:description>    Resumen                                 Lo tipico
+
+<dc:language>       Idioma (ENUM? solo aparecen en/eng/              
+                        fre/ger/ita/por/spa)
+
+<dc:publisher>      Universidad;Departamento;Area           Quitar Universidad y guardar lo demás
+                                                            Identificar si se piden Departamentos o areas y ponderar mas
+                                                            Se pueden guardar relaciones entre áreas y departamentos, me
+                                                                suena que dijo algo, pero parece complicado    
+
+<dc:subject>        Temas tratados, aparece muchas veces,   Ponderar mas? De momento no se
+                    y no hay ningun tipo de orden.
+                    En los mismos metadatos se mezclan idiomas.
+
+<dc:title>                                                  Algo se podra hacer
+<dc:title xml:lang="en"> Titulo, en ingles (Solo en algunos)
+
+<dc:type>           ENUM: TAZ-PFC, TAZ-TFG, TAD-TFM TESIS   Identificar si la consulta pide trabajos del tipo
+                                                            y darle ponderación muy alta
+
+                                                                                                                                     
+<dc:relation>       Url a la memoria                        No usarlo / Ponerlo como StringField (no tokenizar) y despreocuparse
+
+<dc:rights>         Url a los derechos                      No usarlo / Ponerlo como StringField (no tokenizar) y despreocuparse
+
+<dc:identifier>     Url a los metadatos que tenemos         No usarlo / Ponerlo como StringField (no tokenizar) y despreocuparse
