@@ -16,6 +16,7 @@
  */
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -23,18 +24,12 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Index all text files under a directory.
@@ -93,7 +88,7 @@ public class IndexFiles {
             System.out.println("Indexing to directory '" + indexPath + "'...");
 
             Directory dir = FSDirectory.open(Paths.get(indexPath));
-            Analyzer analyzer = new SpanishAnalyzer2();
+            Analyzer analyzer = new SpanishAnalyzer();
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
             if (create) {
@@ -194,71 +189,71 @@ public class IndexFiles {
                     DateFormat dtFormat = SimpleDateFormat.getDateTimeInstance();
                     doc.add(new StoredField("modified", dtFormat.format(file.lastModified())));
 
-                    try {
-                        // parse XML dom
-                        org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
+//                    try {
+//                        // parse XML dom
+//                        org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
+//
+//                        // add TextField
+//                        for (String tag : new String[]{"title", "subject", "description", "creator", "publisher"}) {
+//                            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
+//                            for (int i = 0; i < list.getLength(); i++) {
+//                                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
+//                            }
+//                        }
+//
+//                        // add StringField
+//                        for (String tag : new String[]{"identifier", "type", "format", "language"}) {
+//                            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
+//                            for (int i = 0; i < list.getLength(); i++) {
+//                                doc.add(new StringField(tag, list.item(i).getTextContent(), Field.Store.YES));
+//                            }
+//                        }
+//
+//                        // add Geographical coordinates
+//                        NodeList lowerCorner = xmlDoc.getElementsByTagName("ows:LowerCorner");
+//                        NodeList upperCorner = xmlDoc.getElementsByTagName("ows:UpperCorner");
+//                        for (int i = 0; i < Math.min(lowerCorner.getLength(), upperCorner.getLength()); ++i) {
+//                            String[] xMin_yMin = lowerCorner.item(i).getTextContent().split(" ");
+//                            String[] xMax_yMax = upperCorner.item(i).getTextContent().split(" ");
+//
+//                            doc.add(new DoublePoint(WEST, Double.parseDouble(xMin_yMin[0])));
+//                            doc.add(new DoublePoint(EAST, Double.parseDouble(xMax_yMax[0])));
+//                            doc.add(new DoublePoint(SOUTH, Double.parseDouble(xMin_yMin[1])));
+//                            doc.add(new DoublePoint(NORTH, Double.parseDouble(xMax_yMax[1])));
+//                        }
+//
+//                        // add date elements
+//                        for (String tag : new String[]{"issued", "created"}) {
+//                            NodeList list = xmlDoc.getElementsByTagName("dcterms:" + tag);
+//                            for (int i = 0; i < list.getLength(); i++) {
+//                                // removes all non-digit elements
+//                                doc.add(new StringField(tag, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
+//                            }
+//                        }
+//
+//                        // add temporal element
+//                        // DOC: <dcterms:temporal>begin=2002-03-01; end=2004-08-31;</dcterms:temporal>
+//                        // INDEX: begin=20020301 end=20040831
+//                        NodeList list = xmlDoc.getElementsByTagName("dcterms:temporal");
+//                        for (int i = 0; i < list.getLength(); i++) {
+//                            Matcher p = Pattern.compile("begin=([^;]*);\\s*end=([^;]*);").matcher(list.item(i).getTextContent());
+//                            while (p.find()) {
+//                                // removes all non-digit elements
+//                                doc.add(new DoublePoint(BEGIN, Double.parseDouble(p.group(1).replaceAll("[^\\d]", ""))));
+//                                doc.add(new DoublePoint(END, Double.parseDouble(p.group(2).replaceAll("[^\\d]", ""))));
+//                            }
+//                        }
 
-                        // add TextField
-                        for (String tag : new String[]{"title", "subject", "description", "creator", "publisher"}) {
-                            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
-                            for (int i = 0; i < list.getLength(); i++) {
-                                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
-                            }
-                        }
+//                    } catch (ParserConfigurationException  e) {
+                    // error when parsing, add normal
+//                        e.printStackTrace();
 
-                        // add StringField
-                        for (String tag : new String[]{"identifier", "type", "format", "language"}) {
-                            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
-                            for (int i = 0; i < list.getLength(); i++) {
-                                doc.add(new StringField(tag, list.item(i).getTextContent(), Field.Store.YES));
-                            }
-                        }
-
-                        // add Geographical coordinates
-                        NodeList lowerCorner = xmlDoc.getElementsByTagName("ows:LowerCorner");
-                        NodeList upperCorner = xmlDoc.getElementsByTagName("ows:UpperCorner");
-                        for (int i = 0; i < Math.min(lowerCorner.getLength(), upperCorner.getLength()); ++i) {
-                            String[] xMin_yMin = lowerCorner.item(i).getTextContent().split(" ");
-                            String[] xMax_yMax = upperCorner.item(i).getTextContent().split(" ");
-
-                            doc.add(new DoublePoint(WEST, Double.parseDouble(xMin_yMin[0])));
-                            doc.add(new DoublePoint(EAST, Double.parseDouble(xMax_yMax[0])));
-                            doc.add(new DoublePoint(SOUTH, Double.parseDouble(xMin_yMin[1])));
-                            doc.add(new DoublePoint(NORTH, Double.parseDouble(xMax_yMax[1])));
-                        }
-
-                        // add date elements
-                        for (String tag : new String[]{"issued", "created"}) {
-                            NodeList list = xmlDoc.getElementsByTagName("dcterms:" + tag);
-                            for (int i = 0; i < list.getLength(); i++) {
-                                // removes all non-digit elements
-                                doc.add(new StringField(tag, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
-                            }
-                        }
-
-                        // add temporal element
-                        // DOC: <dcterms:temporal>begin=2002-03-01; end=2004-08-31;</dcterms:temporal>
-                        // INDEX: begin=20020301 end=20040831
-                        NodeList list = xmlDoc.getElementsByTagName("dcterms:temporal");
-                        for (int i = 0; i < list.getLength(); i++) {
-                            Matcher p = Pattern.compile("begin=([^;]*);\\s*end=([^;]*);").matcher(list.item(i).getTextContent());
-                            while (p.find()) {
-                                // removes all non-digit elements
-                                doc.add(new DoublePoint(BEGIN, Double.parseDouble(p.group(1).replaceAll("[^\\d]", ""))));
-                                doc.add(new DoublePoint(END, Double.parseDouble(p.group(2).replaceAll("[^\\d]", ""))));
-                            }
-                        }
-
-                    } catch (ParserConfigurationException | SAXException e) {
-                        // error when parsing, add normal
-                        e.printStackTrace();
-
-                        // Add the contents of the file to a field named "contents".  Specify a Reader,
-                        // so that the text of the file is tokenized and indexed, but not stored.
-                        // Note that FileReader expects the file to be in UTF-8 encoding.
-                        // If that's not the case searching for special characters will fail.
-                        doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(fis, "UTF-8"))));
-                    }
+                    // Add the contents of the file to a field named "contents".  Specify a Reader,
+                    // so that the text of the file is tokenized and indexed, but not stored.
+                    // Note that FileReader expects the file to be in UTF-8 encoding.
+                    // If that's not the case searching for special characters will fail.
+                    doc.add(new TextField("contents", new BufferedReader(new InputStreamReader(fis, "UTF-8"))));
+//                    }
 
                     if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
                         // New index, so we just add the document (no old document can be there):

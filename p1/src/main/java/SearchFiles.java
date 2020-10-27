@@ -16,6 +16,7 @@
  */
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.DoublePoint;
 import org.apache.lucene.index.DirectoryReader;
@@ -134,7 +135,7 @@ public class SearchFiles {
     public SearchFiles() throws Exception {
         // init parser
         IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(index)));
-        Analyzer analyzer = new SpanishAnalyzer2();
+        Analyzer analyzer = new SpanishAnalyzer();
         parser = new QueryParser(field, analyzer);
 
         // init searcher
@@ -145,7 +146,7 @@ public class SearchFiles {
     // ------------------------- search -------------------------
 
     /**
-     * Performs a search from a input text
+     * Performs a search from an input text
      *
      * @param line from this text
      * @return and returns the matching docs identifiers
@@ -160,11 +161,11 @@ public class SearchFiles {
             return null;
         }
 
-        return returnDetailsSearch(parseQuery(line));
+        return returnIdsSearch(parseQuery(line));
     }
 
     /**
-     * Asjks the user for a serach text, searches, and repeats
+     * Asks the user for text, searches, and repeats
      */
     public void interactiveSearch() throws Exception {
 
@@ -214,8 +215,8 @@ public class SearchFiles {
 
     // ------------------------- query -------------------------
 
+    // special search queries
     private static final List<Pair<String, Function<Matcher, Query>>> specials = new ArrayList<>();
-
     static {
         // spatial
         specials.add(new Pair<>("spatial:([^ ]*)", match -> {
@@ -265,7 +266,6 @@ public class SearchFiles {
             line = matcher.replaceAll("");
         }
 
-
         // the rest is a text query
         if (!line.isEmpty())
             builder.add(parser.parse(line), BooleanClause.Occur.SHOULD);
@@ -279,7 +279,7 @@ public class SearchFiles {
      * @param query from this query
      * @return and returns a list of the results as 2-digits code
      */
-    public String[] returnDetailsSearch(Query query) throws Exception {
+    public String[] returnIdsSearch(Query query) throws Exception {
         return Arrays.stream(searcher.search(query, Integer.MAX_VALUE).scoreDocs).map(doc -> {
             try {
                 String path = searcher.doc(doc.doc).get("path");
