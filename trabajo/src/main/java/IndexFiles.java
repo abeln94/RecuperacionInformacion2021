@@ -52,6 +52,12 @@ public class IndexFiles {
             }
         }
 
+        if (docsPath == null) {
+            System.err.println("Usage: java IndexFiles [-index INDEX_PATH] [-docs DOCS_PATH] [-update]\n"
+                    + "This indexes the documents in DOCS_PATH, creating a Lucene index in INDEX_PATH that can be searched with SearchFiles");
+            System.exit(1);
+        }
+
         try {
             new Indexer(indexPath, docsPath, create, debug).run();
         } catch (IOException e) {

@@ -39,12 +39,6 @@ public class Indexer {
 
         this.indexPath = indexPath;
 
-        if (docsPath == null) {
-            System.err.println("Usage: java IndexFiles [-index INDEX_PATH] [-docs DOCS_PATH] [-update]\n"
-                    + "This indexes the documents in DOCS_PATH, creating a Lucene index in INDEX_PATH that can be searched with SearchFiles");
-            System.exit(1);
-        }
-
         docDir = new File(docsPath);
         if (!docDir.exists() || !docDir.canRead()) {
             System.out.println("Document directory '" + docDir.getAbsolutePath() + "' does not exist or is not readable, please check the path");
@@ -200,56 +194,56 @@ public class Indexer {
         // parse XML dom
         org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
 
-        // add TextField
-        for (String tag : new String[]{"title", "subject", "description", "creator", "publisher"}) {
-            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
-            for (int i = 0; i < list.getLength(); i++) {
-                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
-            }
-        }
+//        // add TextField
+//        for (String tag : new String[]{""}) {
+//            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
+//            for (int i = 0; i < list.getLength(); i++) {
+//                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
+//            }
+//        }
 
         // add StringField
-        for (String tag : new String[]{"identifier", "type", "format", "language"}) {
+        for (String tag : new String[]{"contributor", "creator", "description", "language", "publisher", "subject", "title", "type", "relation","rights","identifier"}) {
             NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
             for (int i = 0; i < list.getLength(); i++) {
                 doc.add(new StringField(tag, list.item(i).getTextContent(), Field.Store.YES));
             }
         }
 
-        // add Geographical coordinates
-        NodeList lowerCorner = xmlDoc.getElementsByTagName("ows:LowerCorner");
-        NodeList upperCorner = xmlDoc.getElementsByTagName("ows:UpperCorner");
-        for (int i = 0; i < Math.min(lowerCorner.getLength(), upperCorner.getLength()); ++i) {
-            String[] xMin_yMin = lowerCorner.item(i).getTextContent().split(" ");
-            String[] xMax_yMax = upperCorner.item(i).getTextContent().split(" ");
-
-            doc.add(new DoublePoint(WEST, Double.parseDouble(xMin_yMin[0])));
-            doc.add(new DoublePoint(EAST, Double.parseDouble(xMax_yMax[0])));
-            doc.add(new DoublePoint(SOUTH, Double.parseDouble(xMin_yMin[1])));
-            doc.add(new DoublePoint(NORTH, Double.parseDouble(xMax_yMax[1])));
-        }
+//        // add Geographical coordinates
+//        NodeList lowerCorner = xmlDoc.getElementsByTagName("ows:LowerCorner");
+//        NodeList upperCorner = xmlDoc.getElementsByTagName("ows:UpperCorner");
+//        for (int i = 0; i < Math.min(lowerCorner.getLength(), upperCorner.getLength()); ++i) {
+//            String[] xMin_yMin = lowerCorner.item(i).getTextContent().split(" ");
+//            String[] xMax_yMax = upperCorner.item(i).getTextContent().split(" ");
+//
+//            doc.add(new DoublePoint(WEST, Double.parseDouble(xMin_yMin[0])));
+//            doc.add(new DoublePoint(EAST, Double.parseDouble(xMax_yMax[0])));
+//            doc.add(new DoublePoint(SOUTH, Double.parseDouble(xMin_yMin[1])));
+//            doc.add(new DoublePoint(NORTH, Double.parseDouble(xMax_yMax[1])));
+//        }
 
         // add date elements
-        for (String tag : new String[]{"issued", "created"}) {
-            NodeList list = xmlDoc.getElementsByTagName("dcterms:" + tag);
+        for (String tag : new String[]{"date"}) {
+            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
             for (int i = 0; i < list.getLength(); i++) {
                 // removes all non-digit elements
                 doc.add(new StringField(tag, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
             }
         }
 
-        // add temporal element
-        // DOC: <dcterms:temporal>begin=2002-03-01; end=2004-08-31;</dcterms:temporal>
-        // INDEX: begin=20020301 end=20040831
-        NodeList list = xmlDoc.getElementsByTagName("dcterms:temporal");
-        for (int i = 0; i < list.getLength(); i++) {
-            Matcher p = Pattern.compile("begin=([^;]*);\\s*end=([^;]*);").matcher(list.item(i).getTextContent());
-            while (p.find()) {
-                // removes all non-digit elements
-                doc.add(new DoublePoint(BEGIN, Double.parseDouble(p.group(1).replaceAll("[^\\d]", ""))));
-                doc.add(new DoublePoint(END, Double.parseDouble(p.group(2).replaceAll("[^\\d]", ""))));
-            }
-        }
+//        // add temporal element
+//        // DOC: <dcterms:temporal>begin=2002-03-01; end=2004-08-31;</dcterms:temporal>
+//        // INDEX: begin=20020301 end=20040831
+//        NodeList list = xmlDoc.getElementsByTagName("dcterms:temporal");
+//        for (int i = 0; i < list.getLength(); i++) {
+//            Matcher p = Pattern.compile("begin=([^;]*);\\s*end=([^;]*);").matcher(list.item(i).getTextContent());
+//            while (p.find()) {
+//                // removes all non-digit elements
+//                doc.add(new DoublePoint(BEGIN, Double.parseDouble(p.group(1).replaceAll("[^\\d]", ""))));
+//                doc.add(new DoublePoint(END, Double.parseDouble(p.group(2).replaceAll("[^\\d]", ""))));
+//            }
+//        }
     }
 
 }
