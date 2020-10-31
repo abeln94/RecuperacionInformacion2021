@@ -4,6 +4,7 @@ import indexer.Indexer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.document.DoublePoint;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.queryparser.ext.Extensions;
@@ -27,7 +28,7 @@ public class Queryfy {
 
     public Queryfy() {
         Analyzer analyzer = new SpanishAnalyzer();
-        parser = new QueryParser("content", analyzer);
+        parser = new MultiFieldQueryParser(new String[]{"description", "subject", "title"}, analyzer);
     }
 
     /**

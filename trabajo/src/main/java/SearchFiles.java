@@ -57,7 +57,7 @@ public class SearchFiles {
             try {
                 Extractor.Element element = extractor.getNext();
                 Query query = queryfy.parse(element.text);
-                List<Document> docs = searcher.search(query);
+                List<Searcher.Element> docs = searcher.search(query);
                 printer.print(element.id, docs);
             } catch (IOException e) {
                 e.printStackTrace();

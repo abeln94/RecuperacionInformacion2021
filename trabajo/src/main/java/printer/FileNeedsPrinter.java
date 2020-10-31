@@ -1,6 +1,7 @@
 package printer;
 
 import org.apache.lucene.document.Document;
+import searcher.Searcher.Element;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,11 +18,11 @@ public class FileNeedsPrinter extends Printer {
     }
 
     @Override
-    public void print(String id, List<Document> docs) throws IOException {
+    public void print(String id, List<Element> results) throws IOException {
         // each document as one line
-        for (Document doc : docs) {
+        for (Element element : results) {
             // {id} {name of the file}
-            String path = doc.get("path");
+            String path = element.document.get("path");
             path = path.substring(path.lastIndexOf("\\") + 1);
             output.write(id + "\t" + path + "\n");
         }

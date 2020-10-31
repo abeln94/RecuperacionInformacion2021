@@ -133,13 +133,13 @@ public class Indexer {
             parseFileProperties(file, doc);
 
             // parse File Content
-//            try {
-//                // try extended
-//                parseFileContent(fis, doc);
-//            } catch (Exception e) {
-//                // error try normal
-            parseFileContent_basic(fis, doc);
-//            }
+            try {
+                // try extended
+                parseFileContent(fis, doc);
+            } catch (Exception e) {
+                // error try normal
+                parseFileContent_basic(fis, doc);
+            }
 
             // save
             if (create) {
@@ -194,16 +194,16 @@ public class Indexer {
         // parse XML dom
         org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
 
-//        // add TextField
-//        for (String tag : new String[]{""}) {
-//            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
-//            for (int i = 0; i < list.getLength(); i++) {
-//                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
-//            }
-//        }
+        // add TextField (long fields)
+        for (String tag : new String[]{"description"}) {
+            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
+            for (int i = 0; i < list.getLength(); i++) {
+                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
+            }
+        }
 
-        // add StringField
-        for (String tag : new String[]{"contributor", "creator", "description", "language", "publisher", "subject", "title", "type", "relation","rights","identifier"}) {
+        // add StringField (short fields)
+        for (String tag : new String[]{"contributor", "creator", "language", "publisher", "subject", "title", "type", "relation", "rights", "identifier"}) {
             NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
             for (int i = 0; i < list.getLength(); i++) {
                 doc.add(new StringField(tag, list.item(i).getTextContent(), Field.Store.YES));

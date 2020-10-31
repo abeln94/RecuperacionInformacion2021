@@ -1,8 +1,6 @@
 package printer;
 
-import extractor.ConsoleExtractor;
-import extractor.FileNeedsExtractor;
-import org.apache.lucene.document.Document;
+import searcher.Searcher;
 
 import java.io.IOException;
 import java.util.List;
@@ -27,5 +25,5 @@ public abstract class Printer {
     /**
      * Prints the search result
      */
-    abstract public void print(String id, List<Document> docs) throws IOException;
+    abstract public void print(String id, List<Searcher.Element> results) throws IOException;
 }

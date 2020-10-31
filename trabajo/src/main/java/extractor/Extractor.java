@@ -35,10 +35,18 @@ public abstract class Extractor {
     // ------------------------- data -------------------------
 
     /**
-     * Data class Pair
+     * A search element
      */
     static public class Element {
+
+        /**
+         * The id of the search
+         */
         public String id;
+
+        /**
+         * The search text
+         */
         public String text;
 
         public Element(String id, String text) {
