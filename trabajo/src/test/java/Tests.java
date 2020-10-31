@@ -1,7 +1,3 @@
-import searcher.Searcher;
-
-import java.util.Arrays;
-
 public class Tests {
 
 //    private static Searcher app;
