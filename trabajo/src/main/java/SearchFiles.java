@@ -1,8 +1,8 @@
 import extractor.Extractor;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.search.Query;
+import printer.ConsolePrinter;
 import printer.Printer;
-import queryfy.Queryfy;
+import queryfy.Querify;
 import searcher.Searcher;
 
 import java.io.IOException;
@@ -16,7 +16,6 @@ public class SearchFiles {
     private static String index = "index";
     private static String infoNeeds = null;
     private static String output = null;
-    private static boolean debug = false;
 
 
     /**
@@ -41,14 +40,12 @@ public class SearchFiles {
             } else if ("-output".equals(args[i])) {
                 output = args[i + 1];
                 i++;
-            } else if ("-d".equals(args[i])) {
-                debug = true;
             }
         }
 
         // init
         Extractor extractor = Extractor.build(infoNeeds);
-        Queryfy queryfy = new Queryfy();
+        Querify querify = new Querify();
         Searcher searcher = new Searcher(index);
         Printer printer = Printer.build(output);
 
@@ -56,7 +53,7 @@ public class SearchFiles {
         while (extractor.hasNext()) {
             try {
                 Extractor.Element element = extractor.getNext();
-                Query query = queryfy.parse(element.text);
+                Query query = querify.parse(element.text);
                 List<Searcher.Element> docs = searcher.search(query);
                 printer.print(element.id, docs);
             } catch (IOException e) {

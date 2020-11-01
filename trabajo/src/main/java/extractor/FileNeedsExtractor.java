@@ -43,6 +43,8 @@ public class FileNeedsExtractor extends Extractor {
 
     @Override
     public Element getNext() {
-        return needs.removeFirst();
+        Element element = needs.removeFirst();
+        System.out.println("Search: [" + element.id + "] \"" + element.text + "\"");
+        return element;
     }
 }

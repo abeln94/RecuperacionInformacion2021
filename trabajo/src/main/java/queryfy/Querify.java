@@ -22,11 +22,11 @@ import java.util.regex.Pattern;
 /**
  * Parses a text and returns the corresponding query
  */
-public class Queryfy {
+public class Querify {
 
     private final QueryParser parser;
 
-    public Queryfy() {
+    public Querify() {
         Analyzer analyzer = new SpanishAnalyzer();
         parser = new MultiFieldQueryParser(new String[]{"description", "subject", "title"}, analyzer);
     }
@@ -54,7 +54,9 @@ public class Queryfy {
         if (!line.isEmpty())
             builder.add(parser.parse(line), BooleanClause.Occur.SHOULD);
 
-        return builder.build();
+        BooleanQuery query = builder.build();
+        System.out.println("Query: "+query);
+        return query;
     }
 
     // special search queries

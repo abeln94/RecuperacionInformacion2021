@@ -21,7 +21,7 @@ public class ConsolePrinter extends Printer {
 
         // cap
         if (n > TOP) {
-            System.out.println("(Showing only top 10)");
+            System.out.println("(Showing only top " + TOP + ")");
             results = results.subList(0, TOP);
         }
 

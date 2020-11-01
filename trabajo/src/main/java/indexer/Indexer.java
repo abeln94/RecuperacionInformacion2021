@@ -104,7 +104,7 @@ public class Indexer {
      * @param writer Writer to the index where the given file/dir info will be stored
      * @param file   The file to index, or the directory to recurse into to find files to index
      */
-    public void indexDocs(IndexWriter writer, File file) {
+    private void indexDocs(IndexWriter writer, File file) {
         // do not try to index files that cannot be read
         if (!file.canRead()) {
             System.err.println("Skipped file, can't read: " + file);
