@@ -1,9 +1,8 @@
-import extractor.Extractor;
+import searchfiles.extractor.Extractor;
 import org.apache.lucene.search.Query;
-import printer.ConsolePrinter;
-import printer.Printer;
-import queryfy.Querify;
-import searcher.Searcher;
+import searchfiles.printer.Printer;
+import searchfiles.queryfy.Querify;
+import searchfiles.searcher.Searcher;
 
 import java.io.IOException;
 import java.util.List;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import indexer.Indexer;
+import indexfiles.indexer.Indexer;
 
 import java.io.*;
 
