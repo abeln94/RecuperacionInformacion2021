@@ -1,22 +1,15 @@
 package searchfiles.queryfy;
 
-import indexfiles.indexer.Indexer;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
 import org.apache.lucene.analysis.es.SpanishAnalyzer;
-import org.apache.lucene.document.DoublePoint;
-import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
-import org.apache.lucene.queryparser.ext.Extensions;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.Query;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Function;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -24,12 +17,8 @@ import java.util.regex.Pattern;
  */
 public class Querify {
 
-    private final QueryParser parser;
-
-    public Querify() {
-        Analyzer analyzer = new SpanishAnalyzer();
-        parser = new MultiFieldQueryParser(new String[]{"description", "subject", "title"}, analyzer);
-    }
+    private final Analyzer spanishAnalyzer = new SpanishAnalyzer();
+    private final Analyzer simpleAnalyzer = new SimpleAnalyzer();
 
     /**
      * Parses a text and returns the corresponding query
@@ -39,55 +28,71 @@ public class Querify {
         // prepare query
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
 
-        // get and remove the special parts (if found)
-        for (Extensions.Pair<String, Function<Matcher, Query>> special : specials) {
-            Pattern match = Pattern.compile(special.cur);
-            Matcher matcher = match.matcher(line);
-            while (matcher.find()) {
-                // add to builder
-                builder.add(special.cud.apply(matcher), BooleanClause.Occur.SHOULD);
-            }
-            line = matcher.replaceAll("");
+        // add all terms
+        for (Element field : fields) {
+            builder.add(
+                    new BoostQuery(
+                            new QueryParser(field.field, field.analyze ? spanishAnalyzer : simpleAnalyzer).parse(line),
+                            field.pattern.matcher(line).find() ? field.matchBoost : field.normalBoost
+                    ),
+                    BooleanClause.Occur.SHOULD
+            );
         }
 
-        // the rest is a text query
-        if (!line.isEmpty())
-            builder.add(parser.parse(line), BooleanClause.Occur.SHOULD);
-
         BooleanQuery query = builder.build();
-        System.out.println("Query: "+query);
+        System.out.println("Query: " + query);
         return query;
     }
 
-    // special search queries
-    private static final List<Extensions.Pair<String, Function<Matcher, Query>>> specials = new ArrayList<>();
+    // search data
+    // values totally arbitrary, TODO needs tweaking
+    private static final Element[] fields = new Element[]{
+            new Element("contributor", 1.5f, 2f, "profesor|dirigido", false),
+            new Element("creator", 1.5f, 2f, "alumno|autor|realizado", false),
+            new Element("date", 1.3f, 1.6f, "publicación|publicado", false),
+            new Element("description", 1f, 1.5f, "descripción", true),
+            new Element("language", 1.3f, 1.7f, "idioma", false),
+            new Element("publisher", 1.4f, 1.7f, "universidad|departamento|área", false),
+            new Element("subject", 1f, 1.5f, "tema", true),
+            new Element("title", 1f, 1.5f, "título", true),
+            new Element("type", 1.3f, 1.6f, "trabajo|tesis|proyecto", false),
+    };
 
-    static {
-        // spatial
-        specials.add(new Extensions.Pair<>("spatial:([^ ]*)", match -> {
-            double[] west_east_south_north = Arrays.stream(match.group(1).split(",")).mapToDouble(Double::parseDouble).toArray();
-            return new BooleanQuery.Builder()
-                    .add(DoublePoint.newRangeQuery(Indexer.WEST, Double.NEGATIVE_INFINITY, west_east_south_north[1]), BooleanClause.Occur.MUST)
-                    .add(DoublePoint.newRangeQuery(Indexer.EAST, west_east_south_north[0], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
-                    .add(DoublePoint.newRangeQuery(Indexer.SOUTH, Double.NEGATIVE_INFINITY, west_east_south_north[3]), BooleanClause.Occur.MUST)
-                    .add(DoublePoint.newRangeQuery(Indexer.NORTH, west_east_south_north[2], Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
-                    .build();
-        }));
+    // ------------------------- data -------------------------
 
-        // temporal
-        specials.add(new Extensions.Pair<>("temporal:\\[\\s*([^\\s]*)\\s*TO\\s*([^\\s]*)\\s*\\]", match -> {
-            String startDate = match.group(1).replaceAll("[^\\d]", "");
-            while (startDate.length() < 8) startDate += "0";
-            String endDate = match.group(2).replaceAll("[^\\d]", "");
-            while (endDate.length() < 8) endDate += "9";
-            return new BooleanQuery.Builder()
-                    // end >= startDate -> end € [startDate, oo)
-                    .add(DoublePoint.newRangeQuery(Indexer.END, Double.parseDouble(startDate), Double.POSITIVE_INFINITY), BooleanClause.Occur.MUST)
-                    // begin <= endDate -> begin € [-oo, endDate]
-                    .add(DoublePoint.newRangeQuery(Indexer.BEGIN, Double.NEGATIVE_INFINITY, Double.parseDouble(endDate)), BooleanClause.Occur.MUST)
-                    .build();
+    /**
+     * A field querifyer
+     */
+    private static class Element {
+        /**
+         * The field to search
+         */
+        private final String field;
+        /**
+         * Boost value if the pattern is not found
+         */
+        private final float normalBoost;
+        /**
+         * Boost value if the pattern is found
+         */
+        private final float matchBoost;
+        /**
+         * Patter to search to change the boost value
+         */
+        private final Pattern pattern;
+        /**
+         * If true, the text will be analyzer
+         * If true, will only be tokenized
+         */
+        private final boolean analyze;
+
+        public Element(String field, float normalBoost, float matchBoost, String regexp, boolean analyze) {
+            this.field = field;
+            this.normalBoost = normalBoost;
+            this.matchBoost = matchBoost;
+            this.pattern = Pattern.compile(regexp);
+            this.analyze = analyze;
         }
-        ));
     }
 
 }

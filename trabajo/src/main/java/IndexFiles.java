@@ -31,7 +31,7 @@ public class IndexFiles {
 
     private static String indexPath = "index";
     private static String docsPath = null;
-    private static boolean update = true;
+    private static boolean update = false;
     private static boolean debug = false;
 
     /**

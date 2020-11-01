@@ -19,14 +19,6 @@ import java.util.Date;
 
 public class Indexer {
 
-    // properties
-    public static final String WEST = "west";
-    public static final String EAST = "east";
-    public static final String SOUTH = "south";
-    public static final String NORTH = "north";
-    public static final String BEGIN = "begin";
-    public static final String END = "end";
-
     // parameters
     private final String indexPath;
     private final boolean create;
@@ -131,13 +123,13 @@ public class Indexer {
             parseFileProperties(file, doc);
 
             // parse File Content
-            try {
-                // try extended
-                parseFileContent(fis, doc);
-            } catch (Exception e) {
-                // error try normal
-                parseFileContent_basic(fis, doc);
-            }
+//            try {
+            // try extended
+            parseFileContent(fis, doc);
+//            } catch (Exception e) {
+//                // error try normal
+//                parseFileContent_basic(fis, doc);
+//            }
 
             // save
             if (create) {
@@ -193,55 +185,50 @@ public class Indexer {
         org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
 
         // add TextField (long fields)
-        for (String tag : new String[]{"description"}) {
+        for (String tag : new String[]{"creator","contributor","description", "publisher", "subject", "title", "relation", "rights", "identifier"}) {
             NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
             for (int i = 0; i < list.getLength(); i++) {
-                doc.add(new TextField(tag, new StringReader(list.item(i).getTextContent())));
+                doc.add(new TextField(tag, list.item(i).getTextContent(), Field.Store.YES));
             }
         }
 
-        // add StringField (short fields)
-        for (String tag : new String[]{"contributor", "creator", "language", "publisher", "subject", "title", "type", "relation", "rights", "identifier"}) {
-            NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
+        // convert type
+        {
+            NodeList list = xmlDoc.getElementsByTagName("dc:type");
             for (int i = 0; i < list.getLength(); i++) {
-                doc.add(new StringField(tag, list.item(i).getTextContent(), Field.Store.YES));
+                String text = list.item(i).getTextContent()
+                        .replace("TFG", " Trabajo Fin de Grado ")
+                        .replace("TFM", " Trabajo Fin de Master ")
+                        .replace("PFC", " Proyecto Fin de Carrera ");
+                doc.add(new TextField("type", text, Field.Store.YES));
             }
         }
 
-//        // add Geographical coordinates
-//        NodeList lowerCorner = xmlDoc.getElementsByTagName("ows:LowerCorner");
-//        NodeList upperCorner = xmlDoc.getElementsByTagName("ows:UpperCorner");
-//        for (int i = 0; i < Math.min(lowerCorner.getLength(), upperCorner.getLength()); ++i) {
-//            String[] xMin_yMin = lowerCorner.item(i).getTextContent().split(" ");
-//            String[] xMax_yMax = upperCorner.item(i).getTextContent().split(" ");
-//
-//            doc.add(new DoublePoint(WEST, Double.parseDouble(xMin_yMin[0])));
-//            doc.add(new DoublePoint(EAST, Double.parseDouble(xMax_yMax[0])));
-//            doc.add(new DoublePoint(SOUTH, Double.parseDouble(xMin_yMin[1])));
-//            doc.add(new DoublePoint(NORTH, Double.parseDouble(xMax_yMax[1])));
-//        }
+        // convert language
+        {
+            NodeList list = xmlDoc.getElementsByTagName("dc:language");
+            for (int i = 0; i < list.getLength(); i++) {
+                String text = list.item(i).getTextContent()
+                        .replace("en", " inglés ")
+                        .replace("eng", " ingles ")
+                        .replace("fre", " francés ")
+                        .replace("ger", " alemán ")
+                        .replace("ita", " italiano ")
+                        .replace("por", " portugués ")
+                        .replace("spa", " español ");
+                doc.add(new TextField("language", text, Field.Store.YES));
+            }
+        }
 
         // add date elements
         for (String tag : new String[]{"date"}) {
             NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
             for (int i = 0; i < list.getLength(); i++) {
                 // removes all non-digit elements
-                doc.add(new StringField(tag, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
+                doc.add(new TextField(tag, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
             }
         }
 
-//        // add temporal element
-//        // DOC: <dcterms:temporal>begin=2002-03-01; end=2004-08-31;</dcterms:temporal>
-//        // INDEX: begin=20020301 end=20040831
-//        NodeList list = xmlDoc.getElementsByTagName("dcterms:temporal");
-//        for (int i = 0; i < list.getLength(); i++) {
-//            Matcher p = Pattern.compile("begin=([^;]*);\\s*end=([^;]*);").matcher(list.item(i).getTextContent());
-//            while (p.find()) {
-//                // removes all non-digit elements
-//                doc.add(new DoublePoint(BEGIN, Double.parseDouble(p.group(1).replaceAll("[^\\d]", ""))));
-//                doc.add(new DoublePoint(END, Double.parseDouble(p.group(2).replaceAll("[^\\d]", ""))));
-//            }
-//        }
     }
 
 }
