@@ -16,6 +16,7 @@
  */
 
 import indexfiles.indexer.Indexer;
+import tools.ArgsParser;
 
 import java.io.*;
 
@@ -28,38 +29,26 @@ import java.io.*;
 public class IndexFiles {
 
 
+    private static String indexPath = "index";
+    private static String docsPath = null;
+    private static boolean update = true;
+    private static boolean debug = false;
+
     /**
      * Index all text files under a directory.
      */
     public static void main(String[] args) {
 
-        String indexPath = "index";
-        String docsPath = null;
-        boolean create = true;
-        boolean debug = false;
+        new ArgsParser("This indexes the documents in DOCS_PATH, creating a Lucene index in INDEX_PATH that can be searched with SearchFiles")
+                .addRequired("-index", "The filename of the index folder", v -> indexPath = v)
+                .addRequired("-docs", "The folder name of the documents to index", v -> docsPath = v)
+                .addOptional("-update", "If true, keeps existing index otherwise recreates it (default false)", v -> update = Boolean.parseBoolean(v))
+                .addOptional("-d", "If true, print information about the indexing process (default false)", v -> debug = Boolean.parseBoolean(v))
+                .parse(args);
 
-        for (int i = 0; i < args.length; i++) {
-            if ("-index".equals(args[i])) {
-                indexPath = args[i + 1];
-                i++;
-            } else if ("-docs".equals(args[i])) {
-                docsPath = args[i + 1];
-                i++;
-            } else if ("-update".equals(args[i])) {
-                create = false;
-            } else if("-d".equals(args[i])) {
-                debug = true;
-            }
-        }
-
-        if (docsPath == null) {
-            System.err.println("Usage: java IndexFiles [-index INDEX_PATH] [-docs DOCS_PATH] [-update]\n"
-                    + "This indexes the documents in DOCS_PATH, creating a Lucene index in INDEX_PATH that can be searched with SearchFiles");
-            System.exit(1);
-        }
 
         try {
-            new Indexer(indexPath, docsPath, create, debug).run();
+            new Indexer(indexPath, docsPath, !update, debug).run();
         } catch (IOException e) {
             System.out.println(" caught a " + e.getClass() +
                     "\n with message: " + e.getMessage());
