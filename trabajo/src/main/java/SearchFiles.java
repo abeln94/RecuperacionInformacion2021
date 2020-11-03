@@ -47,6 +47,6 @@ public class SearchFiles {
                 e.printStackTrace();
             }
         }
-
+        printer.close();
     }
 }

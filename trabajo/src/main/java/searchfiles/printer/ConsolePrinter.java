@@ -38,4 +38,9 @@ public class ConsolePrinter extends Printer {
         }
         System.out.println();
     }
+
+    @Override
+    public void close() {
+        // nothing
+    }
 }

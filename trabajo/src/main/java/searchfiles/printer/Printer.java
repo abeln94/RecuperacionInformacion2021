@@ -26,4 +26,9 @@ public abstract class Printer {
      * Prints the search result
      */
     abstract public void print(String id, List<Searcher.Element> results) throws IOException;
+
+    /**
+     * To close related resources
+     */
+    abstract public void close();
 }
