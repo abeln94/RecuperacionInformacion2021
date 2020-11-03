@@ -6,6 +6,7 @@ import searchfiles.searcher.Searcher;
 import tools.ArgsParser;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,9 +25,9 @@ public class SearchFiles {
     public static void main(String[] args) throws Exception {
 
         new ArgsParser("This searches the documents in DOCS_PATH from an existing Lucene index in INDEX_PATH that can be created with IndexFiles")
-                .addRequired("-index", "The filename of the index folder", v -> index = v)
-                .addRequired("-infoNeeds", "The filename of the infoNeeds file, or '-' for standar input", v -> infoNeeds = v)
-                .addRequired("-output", "The filename of the output file, or '-' for standar output", v -> output = v)
+                .addRequired("-index", "The filename of the index folder", 1, v -> index = v.get(0))
+                .addRequired("-infoNeeds", "The filename of the infoNeeds file, or '-' for standar input", 1, v -> infoNeeds = v.get(0))
+                .addRequired("-output", "The filename of the output file, or '-' for standar output", 1, v -> output = v.get(0))
                 .parse(args);
 
         // init

@@ -19,6 +19,7 @@ import indexfiles.indexer.Indexer;
 import tools.ArgsParser;
 
 import java.io.*;
+import java.util.Arrays;
 
 /**
  * Index all text files under a directory.
@@ -40,10 +41,10 @@ public class IndexFiles {
     public static void main(String[] args) {
 
         new ArgsParser("This indexes the documents in DOCS_PATH, creating a Lucene index in INDEX_PATH that can be searched with SearchFiles")
-                .addRequired("-index", "The filename of the index folder", v -> indexPath = v)
-                .addRequired("-docs", "The folder name of the documents to index", v -> docsPath = v)
-                .addOptional("-update", "If true, keeps existing index otherwise recreates it (default false)", v -> update = Boolean.parseBoolean(v))
-                .addOptional("-d", "If true, print information about the indexing process (default false)", v -> debug = Boolean.parseBoolean(v))
+                .addRequired("-index", "The filename of the index folder", 1, v -> indexPath = v.get(0))
+                .addRequired("-docs", "The folder name of the documents to index", 1, v -> docsPath = v.get(0))
+                .addOptional("-update", "If present, keeps existing index otherwise recreates it", 0, v -> update = true)
+                .addOptional("-d", "If present, print information about the indexing process", 0, v -> debug = true)
                 .parse(args);
 
 
