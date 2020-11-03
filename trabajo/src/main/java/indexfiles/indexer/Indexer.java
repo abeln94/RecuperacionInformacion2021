@@ -123,13 +123,13 @@ public class Indexer {
             parseFileProperties(file, doc);
 
             // parse File Content
-//            try {
-            // try extended
-            parseFileContent(fis, doc);
-//            } catch (Exception e) {
-//                // error try normal
-//                parseFileContent_basic(fis, doc);
-//            }
+            try {
+                // try extended
+                parseFileContent(fis, doc);
+            } catch (Exception e) {
+                // error try basic
+                parseFileContent_basic(fis, doc);
+            }
 
             // save
             if (create) {
@@ -185,7 +185,7 @@ public class Indexer {
         org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
 
         // add TextField (long fields)
-        for (String tag : new String[]{"creator","contributor","description", "publisher", "subject", "title", "relation", "rights", "identifier"}) {
+        for (String tag : new String[]{"creator", "contributor", "description", "publisher", "subject", "title", "relation", "rights", "identifier"}) {
             NodeList list = xmlDoc.getElementsByTagName("dc:" + tag);
             for (int i = 0; i < list.getLength(); i++) {
                 doc.add(new TextField(tag, list.item(i).getTextContent(), Field.Store.YES));

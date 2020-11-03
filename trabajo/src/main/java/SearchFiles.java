@@ -1,12 +1,11 @@
-import searchfiles.extractor.Extractor;
 import org.apache.lucene.search.Query;
+import searchfiles.extractor.Extractor;
 import searchfiles.printer.Printer;
 import searchfiles.queryfy.Querify;
 import searchfiles.searcher.Searcher;
 import tools.ArgsParser;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 /**

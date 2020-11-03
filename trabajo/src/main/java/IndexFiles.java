@@ -18,8 +18,7 @@
 import indexfiles.indexer.Indexer;
 import tools.ArgsParser;
 
-import java.io.*;
-import java.util.Arrays;
+import java.io.IOException;
 
 /**
  * Index all text files under a directory.
