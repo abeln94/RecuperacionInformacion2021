@@ -1,4 +1,4 @@
-package searchfiles.queryfy;
+package searchfiles.querify;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
@@ -89,7 +89,7 @@ public class Querify {
             this.field = field;
             this.normalBoost = normalBoost;
             this.matchBoost = matchBoost;
-            this.pattern = Pattern.compile(regexp);
+            this.pattern = Pattern.compile(regexp, Pattern.CASE_INSENSITIVE);
             this.analyze = analyze;
         }
     }

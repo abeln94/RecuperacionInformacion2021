@@ -1,7 +1,7 @@
 import org.apache.lucene.search.Query;
 import searchfiles.extractor.Extractor;
 import searchfiles.printer.Printer;
-import searchfiles.queryfy.Querify;
+import searchfiles.querify.Querify;
 import searchfiles.searcher.Searcher;
 import tools.ArgsParser;
 
