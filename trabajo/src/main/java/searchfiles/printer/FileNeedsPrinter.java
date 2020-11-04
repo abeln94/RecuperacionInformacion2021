@@ -1,5 +1,6 @@
 package searchfiles.printer;
 
+import indexfiles.parser.BasicParser;
 import searchfiles.searcher.Searcher.Element;
 
 import java.io.FileWriter;
@@ -22,7 +23,7 @@ public class FileNeedsPrinter extends Printer {
         System.out.println("Printing " + results.size() + " results to file");
         for (Element element : results) {
             // {id} {name of the file}
-            String path = element.document.get("path");
+            String path = element.document.get(BasicParser.FIELD_PATH);
             path = path.substring(path.lastIndexOf("\\") + 1);
             output.write(id + "\t" + path + "\n");
         }

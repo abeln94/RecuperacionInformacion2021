@@ -15,10 +15,15 @@
  * limitations under the License.
  */
 
-import indexfiles.indexer.Indexer;
+import indexfiles.extractor.Extractor;
+import indexfiles.parser.RecordsDcParser;
+import indexfiles.saver.Saver;
+import org.apache.lucene.document.Document;
 import tools.ArgsParser;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
 /**
  * Index all text files under a directory.
@@ -47,12 +52,35 @@ public class IndexFiles {
                 .parse(args);
 
 
+        // <measure>
+        Date start = new Date();
+        System.out.println("Indexing to directory '" + indexPath + "'...");
+
+        // run
         try {
-            new Indexer(indexPath, docsPath, !update, debug).run();
+            Extractor extractor = new Extractor();
+            Saver saver = new Saver(indexPath, !update, debug);
+            RecordsDcParser parser = new RecordsDcParser();
+
+            // extract
+            extractor.indexPath(docsPath);
+            for (File file : extractor.getFiles()) {
+
+                // parse
+                Document doc = parser.parseFileContent(file);
+
+                // save
+                saver.addDoc(doc);
+            }
+
         } catch (IOException e) {
-            System.out.println(" caught a " + e.getClass() +
-                    "\n with message: " + e.getMessage());
+            // error
+            System.out.println(" caught a " + e.getClass() + "\n with message: " + e.getMessage());
         }
+
+        // <measure/>
+        Date end = new Date();
+        System.out.println(end.getTime() - start.getTime() + " total milliseconds");
 
     }
 
