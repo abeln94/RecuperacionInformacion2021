@@ -1,14 +1,13 @@
 package searchfiles.queryfy;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.SimpleAnalyzer;
-import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.BoostQuery;
 import org.apache.lucene.search.Query;
+import tools.CustomAnalyzer;
 
 import java.util.regex.Pattern;
 
@@ -17,8 +16,8 @@ import java.util.regex.Pattern;
  */
 public class Querify {
 
-    private final Analyzer spanishAnalyzer = new SpanishAnalyzer();
-    private final Analyzer simpleAnalyzer = new SimpleAnalyzer();
+    private final Analyzer spanishAnalyzer = new CustomAnalyzer(true);
+    private final Analyzer simpleAnalyzer = new CustomAnalyzer(false);
 
     /**
      * Parses a text and returns the corresponding query

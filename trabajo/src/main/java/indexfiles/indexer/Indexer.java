@@ -1,6 +1,6 @@
 package indexfiles.indexer;
 
-import org.apache.lucene.analysis.es.SpanishAnalyzer;
+
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -8,6 +8,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.store.FSDirectory;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+import tools.CustomAnalyzer;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -37,7 +38,6 @@ public class Indexer {
 
         this.create = create;
         this.debug = debug;
-
     }
 
 
@@ -45,7 +45,7 @@ public class Indexer {
         Date start = new Date();
         System.out.println("Indexing to directory '" + indexPath + "'...");
 
-        IndexWriterConfig iwc = new IndexWriterConfig(new SpanishAnalyzer());
+        IndexWriterConfig iwc = new IndexWriterConfig(new CustomAnalyzer(true));
         if (create) {
             // Create a new index in the directory, removing any
             // previously indexed documents:
