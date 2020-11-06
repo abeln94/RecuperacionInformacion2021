@@ -27,8 +27,6 @@ import java.util.Date;
 
 /**
  * Index all text files under a directory.
- * <p>
- * This is a command-line application demonstrating simple Lucene indexing.
  * Run it with no command-line arguments for usage information.
  */
 public class IndexFiles {
@@ -72,6 +70,8 @@ public class IndexFiles {
                 // save
                 saver.addDoc(doc);
             }
+
+            saver.close();
 
         } catch (IOException e) {
             // error
