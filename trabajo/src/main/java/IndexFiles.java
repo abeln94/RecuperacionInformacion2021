@@ -61,6 +61,7 @@ public class IndexFiles {
             RecordsDcParser parser = new RecordsDcParser();
 
             // extract
+            saver.initialize(parser.getAnalyzer());
             extractor.indexPath(docsPath);
             for (File file : extractor.getFiles()) {
 

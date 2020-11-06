@@ -1,5 +1,7 @@
 package indexfiles.parser;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 
 import java.io.*;
@@ -70,5 +72,12 @@ public class BasicParser {
      */
     protected void parseFileContent(FileInputStream fis, Document doc) throws Exception {
         doc.add(new TextField(FIELD_CONTENT, new BufferedReader(new InputStreamReader(fis, "UTF-8"))));
+    }
+
+    /**
+     * @return the analyzer that should be used for this document
+     */
+    public Analyzer getAnalyzer(){
+        return new StandardAnalyzer();
     }
 }

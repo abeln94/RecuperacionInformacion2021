@@ -2,12 +2,12 @@ package indexfiles.saver;
 
 
 import indexfiles.parser.BasicParser;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.store.FSDirectory;
-import tools.CustomAnalyzer;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -17,22 +17,25 @@ import java.nio.file.Paths;
  */
 public class Saver {
 
+    private final String indexPath;
     private final boolean create;
     private final boolean debug;
-    private final IndexWriter writer;
+    private IndexWriter writer;
 
     /**
      * @param indexPath path where the index will be created/updated
      * @param create    true to create, false to update
      * @param debug     if true, fields of each file will be printed
      */
-    public Saver(String indexPath, boolean create, boolean debug) throws IOException {
-        // parameters
+    public Saver(String indexPath, boolean create, boolean debug) {
+        this.indexPath = indexPath;
         this.create = create;
         this.debug = debug;
+    }
 
+    public void initialize(Analyzer analyzer) throws IOException {
         // initialize
-        IndexWriterConfig iwc = new IndexWriterConfig(new CustomAnalyzer(true));
+        IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
         if (create) {
             // Create a new index in the directory, removing any
             // previously indexed documents:

@@ -1,5 +1,6 @@
 package searchfiles.querify;
 
+import indexfiles.parser.RecordsDcParser;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
@@ -46,15 +47,15 @@ public class Querify {
     // search data
     // values totally arbitrary, TODO needs tweaking
     private static final Element[] fields = new Element[]{
-            new Element("contributor", 1.5f, 2f, "profesor|dirigido", false),
-            new Element("creator", 1.5f, 2f, "alumno|autor|realizado", false),
-            new Element("date", 1.3f, 1.6f, "publicación|publicado", false),
-            new Element("description", 1f, 1.5f, "descripción", true),
-            new Element("language", 1.3f, 1.7f, "idioma", false),
-            new Element("publisher", 1.4f, 1.7f, "universidad|departamento|área", false),
-            new Element("subject", 1f, 1.5f, "tema", true),
-            new Element("title", 1f, 1.5f, "título", true),
-            new Element("type", 1.3f, 1.6f, "trabajo|tesis|proyecto", false),
+            new Element(RecordsDcParser.FIELD_CONTRIBUTOR, 1.5f, 2f, "profesor|dirigido", false),
+            new Element(RecordsDcParser.FIELD_CREATOR, 1.5f, 2f, "alumno|autor|realizado", false),
+            new Element(RecordsDcParser.FIELD_DATE, 1.3f, 1.6f, "publicación|publicado", false),
+            new Element(RecordsDcParser.FIELD_DESCRIPTION, 1f, 1.5f, "descripción", true),
+            new Element(RecordsDcParser.FIELD_LANGUAGE, 1.3f, 1.7f, "idioma", false),
+            new Element(RecordsDcParser.FIELD_PUBLISHER, 1.4f, 1.7f, "universidad|departamento|área", false),
+            new Element(RecordsDcParser.FIELD_SUBJECT, 1f, 1.5f, "tema", true),
+            new Element(RecordsDcParser.FIELD_TITLE, 1f, 1.5f, "título", true),
+            new Element(RecordsDcParser.FIELD_TYPE, 1.3f, 1.6f, "trabajo|tesis|proyecto", false),
     };
 
     // ------------------------- data -------------------------
