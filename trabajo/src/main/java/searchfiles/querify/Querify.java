@@ -45,7 +45,7 @@ public class Querify {
     }
 
     // search data
-    // values totally arbitrary, TODO needs tweaking
+    // values totally arbitrary
     private static final Element[] fields = new Element[]{
             new Element(RecordsDcParser.FIELD_CONTRIBUTOR, 1.5f, 2f, "profesor|dirigido", false),
             new Element(RecordsDcParser.FIELD_CREATOR, 1.5f, 2f, "alumno|autor|realizado", false),

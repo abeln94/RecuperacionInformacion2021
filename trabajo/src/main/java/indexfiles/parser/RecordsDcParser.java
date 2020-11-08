@@ -40,7 +40,7 @@ public class RecordsDcParser extends BasicParser {
         // parse XML dom
         org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
 
-        // add TextField (long fields)
+        // add TextField (no conversion)
         for (String tag : new String[]{FIELD_CREATOR, FIELD_CONTRIBUTOR, FIELD_DESCRIPTION, FIELD_PUBLISHER, FIELD_SUBJECT, FIELD_TITLE, FIELD_RELATION, FIELD_RIGHTS, FIELD_IDENTIFIER}) {
             NodeList list = xmlDoc.getElementsByTagName(PREFIX_DC + tag);
             for (int i = 0; i < list.getLength(); i++) {
@@ -76,11 +76,13 @@ public class RecordsDcParser extends BasicParser {
             }
         }
 
-        // add date elements
-        NodeList list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_DATE);
-        for (int i = 0; i < list.getLength(); i++) {
-            // removes all non-digit elements
-            doc.add(new TextField(FIELD_DATE, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
+        // convert date
+        {
+            NodeList list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_DATE);
+            for (int i = 0; i < list.getLength(); i++) {
+                // removes all non-digit elements
+                doc.add(new TextField(FIELD_DATE, list.item(i).getTextContent().replaceAll("[^\\d]", ""), Field.Store.YES));
+            }
         }
     }
 
