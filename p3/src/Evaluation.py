@@ -1,6 +1,7 @@
 import argparse
 from collections import defaultdict
 
+import matplotlib.pyplot as plt
 import pandas as pd
 
 # input texts
@@ -20,7 +21,7 @@ MAP = 'MAP'
 TOTAL = 'TOTAL'
 
 # utils
-ELEVEN_POINTS = [i / 10 for i in range(11)]
+INTERPOLATION_POINTS = [i / 10 for i in range(11)]
 
 
 def avg(l, default=0):
@@ -75,7 +76,7 @@ if __name__ == '__main__':
 
         # header
         measures[INFORMATION_NEED].append(
-            inf_need
+            str(inf_need)
         )
 
         # precision
@@ -110,17 +111,12 @@ if __name__ == '__main__':
 
         # interpolated_recall_precision
         measures[INTERPOLATED_RECALL_PRECISION].append(
-            [
-                (
-                    interp,
-                    max((p for r, p, _ in recall_precision_list if r >= interp), default=0)
-                )
-                for interp in ELEVEN_POINTS
-            ]
+            {interpolation: max((p for r, p, _ in recall_precision_list if r >= interpolation), default=0) for interpolation in INTERPOLATION_POINTS}
         )
 
     # open output file to write results
     with open(args.output, 'w') as output:
+
         def fprintln(*args):
             """Prints a formatted line (substitutes a normal println)"""
             output.write('\t'.join([
@@ -131,16 +127,17 @@ if __name__ == '__main__':
 
 
         # print each information need
-        for measure in range(len(measures[INFORMATION_NEED])):
+        n = len(measures[INFORMATION_NEED])
+        for i in range(n):
             for label in [INFORMATION_NEED, PRECISION, RECALL, F1, PREC10, AVG_PREC]:
-                fprintln(label, measures[label][measure])
+                fprintln(label, measures[label][i])
 
             fprintln(RECALL_PRECISION)
-            for r, p in measures[RECALL_PRECISION][measure]:
+            for r, p in measures[RECALL_PRECISION][i]:
                 fprintln(r, p)
 
             fprintln(INTERPOLATED_RECALL_PRECISION)
-            for r, p in measures[INTERPOLATED_RECALL_PRECISION][measure]:
+            for r, p in measures[INTERPOLATED_RECALL_PRECISION][i].items():
                 fprintln(r, p)
             fprintln()
 
@@ -152,7 +149,20 @@ if __name__ == '__main__':
         fprintln(MAP, avg(measures[AVG_PREC]))
 
         fprintln(INTERPOLATED_RECALL_PRECISION)
-        for list_recall_precision in zip(*measures[INTERPOLATED_RECALL_PRECISION]):
-            fprintln(list_recall_precision[0][0], avg([x for _, x in list_recall_precision]))  # average of lists element by element
+        for interp in INTERPOLATION_POINTS:
+            fprintln(interp, avg([measures[INTERPOLATED_RECALL_PRECISION][i][interp] for i in range(n)]))
 
         fprintln()
+
+    # graphs
+
+    # interpolated precision recall graphs
+    for i in range(n):
+        plt.plot(INTERPOLATION_POINTS, [measures[INTERPOLATED_RECALL_PRECISION][i][interp] for interp in INTERPOLATION_POINTS], label=f"information need {i + 1}")
+
+    plt.plot(INTERPOLATION_POINTS, [avg([measures[INTERPOLATED_RECALL_PRECISION][i][interp] for i in range(n)]) for interp in INTERPOLATION_POINTS], label='Total')
+
+    plt.legend()
+    plt.ylabel('precision')
+    plt.xlabel('exhaustividad (recall)')
+    plt.show()
