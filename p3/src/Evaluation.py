@@ -29,6 +29,11 @@ def avg(l, default=0):
     return sum(l) / len(l) if len(l) != 0 else default
 
 
+def hmean(a, b):
+    """Harmonic mean of two numbers"""
+    return 2 * a * b / (a + b)
+
+
 if __name__ == '__main__':
 
     # init args
@@ -44,8 +49,11 @@ if __name__ == '__main__':
 
     # calculate all values
     measures = defaultdict(lambda: [])
-    for inf_need, doc_ids in results.groupby([INFORMATION_NEED]):
+    for inf_need, group in results.groupby([INFORMATION_NEED]):
         # for each information need
+
+        # get the documents (45 max)
+        doc_ids = group[DOCUMENT_ID].head(45).values
 
         # values
         all = set(qrels[DOCUMENT_ID].values).union(doc_ids)
@@ -61,7 +69,7 @@ if __name__ == '__main__':
 
         # calculate the precision and recall for each returned document in order
         recall_precision_list = []
-        for doc_id in doc_ids[DOCUMENT_ID].values:
+        for doc_id in doc_ids:
             recuperated.add(doc_id)
             notRecuperated.remove(doc_id)
 
@@ -91,7 +99,7 @@ if __name__ == '__main__':
 
         # f1
         measures[F1].append(
-            2 * p * r / (p + r)  # from last calculated precision and recall
+            hmean(p, r)  # from last calculated precision and recall
         )
 
         # prec@10
@@ -143,8 +151,10 @@ if __name__ == '__main__':
 
         # print average total
         fprintln(TOTAL)
-        for label in [PRECISION, RECALL, F1, PREC10]:
-            fprintln(label, avg(measures[label]))
+        fprintln(PRECISION, avg(measures[PRECISION]))
+        fprintln(RECALL, avg(measures[RECALL]))
+        fprintln(F1, hmean(avg(measures[PRECISION]), avg(measures[RECALL])))
+        fprintln(PREC10, avg(measures[PREC10]))
 
         fprintln(MAP, avg(measures[AVG_PREC]))
 
