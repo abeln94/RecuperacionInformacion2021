@@ -1,0 +1,19 @@
+<rdf:RDF
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:vcard="http://www.w3.org/2001/vcard-rdf/3.0#"
+    xmlns:j.0="http://xmlns.com/foaf/0.1/">
+  <j.0:Person rdf:about="http://somewhere/JohnSmith">
+    <vcard:N rdf:parseType="Resource">
+      <vcard:Family>Smith</vcard:Family>
+      <vcard:Given>John</vcard:Given>
+    </vcard:N>
+    <vcard:FN>John Smith</vcard:FN>
+  </j.0:Person>
+  <rdf:Description rdf:about="http://somewhere/Persona1">
+    <j.0:knows>
+      <rdf:Description rdf:about="http://somewhere/Persona2">
+        <j.0:knows rdf:resource="http://somewhere/Persona1"/>
+      </rdf:Description>
+    </j.0:knows>
+  </rdf:Description>
+</rdf:RDF>
