@@ -1,3 +1,8 @@
+"""
+Instrucciones de ejecución:
+- Instalar los paquetes pandas (pip install pandas) y matplotlib (pip install matplotlib)
+- Ejecutar con los argumentos especificados en el enunciado (si se ejecuta sin argumentos o con '-h' mostrará cuales son)
+"""
 import argparse
 from collections import defaultdict
 
@@ -30,7 +35,7 @@ def avg(l, default=0):
 
 
 def hmean(a, b):
-    """Harmonic mean of two numbers"""
+    """ Harmonic mean of two numbers """
     return 2 * a * b / (a + b)
 
 
@@ -47,7 +52,7 @@ if __name__ == '__main__':
     qrels = pd.read_csv(args.qrels, delimiter='\t', names=[INFORMATION_NEED, DOCUMENT_ID, RELEVANCY], header=None)
     results = pd.read_csv(args.results, delimiter='\t', names=[INFORMATION_NEED, DOCUMENT_ID], header=None)
 
-    # calculate all values
+    # calculate all measures
     measures = defaultdict(lambda: [])
     for inf_need, group in results.groupby([INFORMATION_NEED]):
         # for each information need
@@ -126,10 +131,9 @@ if __name__ == '__main__':
     with open(args.output, 'w') as output:
 
         def fprintln(*args):
-            """Prints a formatted line (substitutes a normal println)"""
+            """ Prints a formatted line (substitutes a normal println) """
             output.write('\t'.join([
-                '%.3f' % x
-                if isinstance(x, int) or isinstance(x, float)
+                '%.3f' % x if isinstance(x, int) or isinstance(x, float)  # three decimals for numbers
                 else str(x)
                 for x in args]) + '\n')
 
