@@ -1,0 +1,43 @@
+@prefix :      <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+#coleccion de datos, 2 libros clasificados con terminos de un tesauro
+
+<http://www.collection.com/libro1>
+        a            <http://schema.org/Book> , owl:NamedIndividual ;
+        dct:subject  <http://www.gemet.com/biosfera> ;
+        dct:title    "Titulo del libro 1"@es .
+        
+<http://www.collection.com/libro2>
+        a            <http://schema.org/Book> , owl:NamedIndividual ;
+        dct:subject  <http://www.gemet.com/ciclodelavida> ;
+        dct:title    "Titulo del libro 2"@es .
+
+#jerarquia del tesauro usado para clasificar los libros
+
+<http://www.gemet.com/ciclodelavida>
+        a               skos:Concept , owl:NamedIndividual ;
+        skos:prefLabel  "Ciclo de la vida"@es .
+
+<http://www.gemet.com/actividadbiologica>
+        a               skos:Concept , owl:NamedIndividual ;
+        skos:prefLabel  "Actividad biologica"@es .
+
+<http://www.gemet.com/procesobiologico>
+        a               skos:Concept , owl:NamedIndividual ;
+        skos:narrower   <http://www.gemet.com/ciclodelavida> , <http://www.gemet.com/actividadbiologica> ;
+        skos:prefLabel  "Proceso biologico"@es .
+
+<http://www.gemet.com/biosfera>
+        a               skos:Concept , owl:NamedIndividual ;
+        skos:narrower   <http://www.gemet.com/ecologia> , <http://www.gemet.com/procesobiologico> ;
+        skos:prefLabel  "Biosfera"@es .
+
+<http://www.gemet.com/ecologia>
+        a               skos:Concept , owl:NamedIndividual ;
+        skos:prefLabel  "Ecologia"@es .
