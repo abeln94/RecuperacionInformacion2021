@@ -27,7 +27,7 @@ CAMPO -             Descipción -                            Idea de uso -      
 <dc:title>                                                  Algo se podra hacer
 <dc:title xml:lang="en"> Titulo, en ingles (Solo en algunos)
 
-<dc:type>           ENUM: TAZ-PFC, TAZ-TFG, TAD-TFM TESIS   Identificar si la consulta pide trabajos del tipo
+<dc:type>           ENUM: TAZ-PFC, TAZ-TFG, TAD-TFM, TESIS   Identificar si la consulta pide trabajos del tipo
                                                             y darle ponderación muy alta
 
                                                                                                                                      
