@@ -1,0 +1,78 @@
+@prefix :      <http://www.w3.org/2004/02/skos/core#> .
+@prefix dct:   <http://purl.org/dc/terms/> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+<http://www.collection.com/libro1>
+        a            owl:NamedIndividual , owl:Thing , <http://schema.org/Book> ;
+        dct:subject  <http://www.gemet.com/biosfera> ;
+        dct:title    "Titulo del libro 1"@es , "Titulo del libro 1"^^rdf:langString ;
+        owl:sameAs   <http://www.collection.com/libro1> .
+
+[ a            owl:Class ;
+  owl:unionOf  ( skos:Concept skos:Collection )
+] .
+
+<http://schema.org/Book>
+        a                    owl:Class ;
+        rdfs:subClassOf      <http://schema.org/Book> , owl:Thing ;
+        owl:disjointWith     owl:Nothing ;
+        owl:equivalentClass  <http://schema.org/Book> .
+
+<http://www.gemet.com/ecologia>
+        a                       owl:NamedIndividual , skos:Concept , owl:Thing ;
+        owl:sameAs              <http://www.gemet.com/ecologia> ;
+        skos:broader            <http://www.gemet.com/biosfera> ;
+        skos:broaderTransitive  <http://www.gemet.com/biosfera> ;
+        skos:prefLabel          "Ecologia"@es ;
+        skos:semanticRelation   <http://www.gemet.com/biosfera> .
+
+<http://www.w3.org/2004/02/skos/core>
+        a               owl:Ontology ;
+        rdfs:seeAlso    <http://www.w3.org/TR/skos-reference/> ;
+        owl:versionIRI  <http://www.w3.org/TR/skos-reference/skos-owl1-dl.rdf> .
+
+<http://www.gemet.com/actividadbiologica>
+        a                       skos:Concept , owl:NamedIndividual , owl:Thing ;
+        owl:sameAs              <http://www.gemet.com/actividadbiologica> ;
+        skos:broader            <http://www.gemet.com/procesobiologico> ;
+        skos:broaderTransitive  <http://www.gemet.com/procesobiologico> , <http://www.gemet.com/biosfera> ;
+        skos:prefLabel          "Actividad biologica"@es ;
+        skos:semanticRelation   <http://www.gemet.com/biosfera> , <http://www.gemet.com/procesobiologico> .
+
+<http://www.gemet.com/biosfera>
+        a                        owl:Thing , owl:NamedIndividual , skos:Concept ;
+        owl:sameAs               <http://www.gemet.com/biosfera> ;
+        skos:narrower            <http://www.gemet.com/procesobiologico> , <http://www.gemet.com/ecologia> ;
+        skos:narrowerTransitive  <http://www.gemet.com/procesobiologico> , <http://www.gemet.com/ciclodelavida> , <http://www.gemet.com/ecologia> , <http://www.gemet.com/actividadbiologica> ;
+        skos:prefLabel           "Biosfera"@es ;
+        skos:semanticRelation    <http://www.gemet.com/ecologia> , <http://www.gemet.com/ciclodelavida> , <http://www.gemet.com/procesobiologico> , <http://www.gemet.com/actividadbiologica> .
+
+<http://www.gemet.com/procesobiologico>
+        a                        owl:NamedIndividual , owl:Thing , skos:Concept ;
+        owl:sameAs               <http://www.gemet.com/procesobiologico> ;
+        skos:broader             <http://www.gemet.com/biosfera> ;
+        skos:broaderTransitive   <http://www.gemet.com/biosfera> ;
+        skos:narrower            <http://www.gemet.com/ciclodelavida> , <http://www.gemet.com/actividadbiologica> ;
+        skos:narrowerTransitive  <http://www.gemet.com/actividadbiologica> , <http://www.gemet.com/ciclodelavida> ;
+        skos:prefLabel           "Proceso biologico"@es ;
+        skos:semanticRelation    <http://www.gemet.com/actividadbiologica> , <http://www.gemet.com/biosfera> , <http://www.gemet.com/ciclodelavida> .
+
+<http://www.gemet.com/ciclodelavida>
+        a                       skos:Concept , owl:NamedIndividual , owl:Thing ;
+        owl:sameAs              <http://www.gemet.com/ciclodelavida> ;
+        skos:broader            <http://www.gemet.com/procesobiologico> ;
+        skos:broaderTransitive  <http://www.gemet.com/biosfera> , <http://www.gemet.com/procesobiologico> ;
+        skos:prefLabel          "Ciclo de la vida"@es ;
+        skos:semanticRelation   <http://www.gemet.com/procesobiologico> , <http://www.gemet.com/biosfera> .
+
+<http://www.collection.com/libro2>
+        a            owl:NamedIndividual , owl:Thing , <http://schema.org/Book> ;
+        dct:subject  <http://www.gemet.com/biosfera> , <http://www.gemet.com/ciclodelavida> , <http://www.gemet.com/procesobiologico> ;
+        dct:title    "Titulo del libro 2"@es , "Titulo del libro 2"^^rdf:langString ;
+        owl:sameAs   <http://www.collection.com/libro2> .
+
+[ rdf:first dct:subject ; rdf:rest ( skos:broader ) ] .
