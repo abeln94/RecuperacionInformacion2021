@@ -1,0 +1,105 @@
+@prefix	rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix	rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
+@prefix	ri:		<http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#> .
+
+
+// clases
+ri:document		a	rdfs:Class.
+
+ri:tfg			a	rdfs:Class;
+				rdfs:subClassOf ri:document;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Trabajo_de_fin_de_grado".
+			
+ri:tfm			a	rdfs:Class;
+				rdfs:subClassOf ri:document.
+
+ri:pfc			a	rdfs:Class;
+				rdfs:subClassOf ri:document;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Proyecto_fin_de_carrera".
+			
+ri:tesis		a	rdfs:Class;
+				rdfs:subClassOf ri:document;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Doctorado".
+			
+ri:university	a	rdfs:Class;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Universidad".
+			
+ri:department	a	rdfs:Class;
+				rdfs:subClassOf ri:university.
+
+ri:area			a	rdfs:Class;
+				rdfs:subClassOf ri:department.
+			
+ri:person		a	rdfs:Class;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Persona".
+			
+			
+			
+// propiedades de documento 
+ri:contributor	a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	ri:person;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Tutor".
+			
+ri:creator		a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	ri:person;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Alumno".
+			
+ri:date			a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	xsd:gYear.
+			
+ri:description	a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	rdfs:Literal.
+			
+ri:language		a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	rdfs:Literal;
+				rdfs:Label	 "https://es.wikipedia.org/wiki/Idioma".
+			
+ri:publisher	a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	ri:university.
+			
+ri:subject		a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	rdfs:Literal.
+			
+ri:title		a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	rdfs:Literal.
+			
+ri:relation		a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	xsd:anyURI.
+			
+ri:rights		a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	xsd:anyURI;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Derecho_de_autor".
+			
+ri:identifier	a	rdf:Property;
+				rdfs:domain	ri:document;
+				rdfs:range	xsd:anyURI.
+
+
+
+// propiedades de universidad (y departamento y area)
+ri:name			a	rdf:Property;
+				rdfs:domain	ri:university;
+				rdfs:range	rdfs:Literal.
+
+
+
+// propiedades de persona
+ri:firstName	a	rdf:Property;
+				rdfs:domain	ri:person;
+				rdfs:range	rdfs:Literal;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Nombre_de_pila".
+			
+ri:lastName		a	rdf:Property;
+				rdfs:domain	ri:person;
+				rdfs:range	rdfs:Literal;
+				rdfs:Label	"https://es.wikipedia.org/wiki/Apellido".
