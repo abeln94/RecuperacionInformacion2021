@@ -20,124 +20,182 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
 /**
- * Muestar la integración dentro de jena de los indices de lucene para permitir 
+ * Muestar la integración dentro de jena de los indices de lucene para permitir
  * el ranking de resultados
  * Se utiliza una coleccion de datos de la bbc
  * Lo procesa todo en memoria
  */
 public class RankingDeResultadosMem {
-	public static void main (String args[]) throws Exception{
-		
-		//definimos la configuración del repositorio indexado
-		EntityDefinition entDef = new EntityDefinition("uri", "name", ResourceFactory.createProperty("http://xmlns.com/foaf/0.1/","name"));
-		entDef.set("description", DCTerms.description.asNode());
-		TextIndexConfig config = new TextIndexConfig(entDef);	   
-	    config.setAnalyzer(new EnglishAnalyzer());
-	    config.setQueryAnalyzer(new EnglishAnalyzer());
-	    config.setMultilingualSupport(true);
-	    
-	    //definimos el repositorio indexado todo en memoria
-	    Dataset ds1 = DatasetFactory.createGeneral() ;
-	    Directory dir =  new RAMDirectory();
-	    Dataset ds = TextDatasetFactory.createLucene(ds1, dir, config) ;
-		
-	    // cargamos el fichero deseado y lo almacenamos en el repositorio indexado	  
-        RDFDataMgr.read(ds.getDefaultModel(), "bbcColeccion.ttl") ;
-              
-       //realizamos una consulta al nombre y la descripcion que use filtros para preguntar por musica
+    public static void main(String args[]) throws Exception {
+
+        //definimos la configuración del repositorio indexado
+        EntityDefinition entDef = new EntityDefinition("uri", "name", ResourceFactory.createProperty("http://xmlns.com/foaf/0.1/", "name"));
+        entDef.set("description", DCTerms.description.asNode());
+        TextIndexConfig config = new TextIndexConfig(entDef);
+        config.setAnalyzer(new EnglishAnalyzer());
+        config.setQueryAnalyzer(new EnglishAnalyzer());
+        config.setMultilingualSupport(true);
+
+        //definimos el repositorio indexado todo en memoria
+        Dataset ds1 = DatasetFactory.createGeneral();
+        Directory dir = new RAMDirectory();
+        Dataset ds = TextDatasetFactory.createLucene(ds1, dir, config);
+
+        // cargamos el fichero deseado y lo almacenamos en el repositorio indexado
+        RDFDataMgr.read(ds.getDefaultModel(), "bbcColeccion.ttl");
+
+        //realizamos una consulta al nombre y la descripcion que use filtros para preguntar por musica
         System.out.println("---------------------------------------------");
         System.out.println("Resultados con filtros. No hay ordenación");
         System.out.println("---------------------------------------------");
-        
-        
-        String q ="prefix foaf: <http://xmlns.com/foaf/0.1/> "
-        		+ "prefix text: <http://jena.apache.org/text#> "
-        		+ "prefix dct:	<http://purl.org/dc/terms/> "
-        		+ "Select distinct ?x  where { "
-        		+ "{?x dct:description ?y} union {?x foaf:name ?y}. "
-        		+ "filter(regex(?y,\"music\",\"i\"))}";
-        
-        Query query = QueryFactory.create(q) ;
+
+
+        String q = "prefix foaf: <http://xmlns.com/foaf/0.1/> "
+                + "prefix text: <http://jena.apache.org/text#> "
+                + "prefix dct:	<http://purl.org/dc/terms/> "
+                + "Select distinct ?x  where { "
+                + "{?x dct:description ?y} union {?x foaf:name ?y}. "
+                + "filter(regex(?y,\"music\",\"i\"))}";
+
+        Query query = QueryFactory.create(q);
         try (QueryExecution qexec = QueryExecutionFactory.create(query, ds)) {
-          ResultSet results = qexec.execSelect() ;
-          for ( ; results.hasNext() ; ) {
-            QuerySolution soln = results.nextSolution() ;
-            System.out.println(soln);          
-          }
+            ResultSet results = qexec.execSelect();
+            for (; results.hasNext(); ) {
+                QuerySolution soln = results.nextSolution();
+                System.out.println(soln);
+            }
         }
-        
-      //realizamos una consulta al nombre y la descripcion que que usa lucene para obtener los resultados
-      //se hace con union para mostrar que no es al forma adecuada de consultar
+
+        //realizamos una consulta al nombre y la descripcion que que usa lucene para obtener los resultados
+        //se hace con union para mostrar que no es al forma adecuada de consultar
         System.out.println("---------------------------------------------");
         System.out.println("Resultados con union. La ordenación es erronea ya que no existen ambos score");
         System.out.println("---------------------------------------------");
-        
-        q ="prefix foaf: <http://xmlns.com/foaf/0.1/> "
-        		+ "prefix text: <http://jena.apache.org/text#> "
-        		+ "prefix dct:	<http://purl.org/dc/terms/> "
-        		+ "Select ?x ?score1 ?score2 ?scoretot where { "
-        		+ "{(?x ?score1) text:query (foaf:name 'music' )} union "
-        	    + "{(?x ?score2) text:query (dct:description 'music' )}"
-        	    + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "    
-        		+ "} ORDER BY DESC(?scoretot)";
-        
-        query = QueryFactory.create(q) ;
+
+        q = "prefix foaf: <http://xmlns.com/foaf/0.1/> "
+                + "prefix text: <http://jena.apache.org/text#> "
+                + "prefix dct:	<http://purl.org/dc/terms/> "
+                + "Select ?x ?score1 ?score2 ?scoretot where { "
+                + "{(?x ?score1) text:query (foaf:name 'music' )} union "
+                + "{(?x ?score2) text:query (dct:description 'music' )}"
+                + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "
+                + "} ORDER BY DESC(?scoretot)";
+
+        query = QueryFactory.create(q);
         try (QueryExecution qexec = QueryExecutionFactory.create(query, ds)) {
-          ResultSet results = qexec.execSelect() ;
-          for ( ; results.hasNext() ; ) {
-            QuerySolution soln = results.nextSolution() ;
-            System.out.println(soln);          
-          }
+            ResultSet results = qexec.execSelect();
+            for (; results.hasNext(); ) {
+                QuerySolution soln = results.nextSolution();
+                System.out.println(soln);
+            }
         }
-        
-      //realizamos una consulta al nombre y la descripcion que que usa lucene para obtener los resultados
+
+        //realizamos una consulta al nombre y la descripcion que que usa lucene para obtener los resultados
         //se hace con optional para mostrar que los resultados son mejores
         System.out.println("---------------------------------------------");
         System.out.println("Resultados con optional. Suma de los pesos es de forma adecuada");
         System.out.println("---------------------------------------------");
-                  
-        q ="prefix foaf: <http://xmlns.com/foaf/0.1/> "
-        		+ "prefix text: <http://jena.apache.org/text#> "
-        		+ "prefix dct:	<http://purl.org/dc/terms/> "
-        		+ "Select ?x ?score1 ?score2 ?scoretot where { " 
-        	    + "optional {(?x ?score2) text:query (dct:description 'music' )}. "
-        	    + "optional {(?x ?score1) text:query (foaf:name 'music' )}. "
-        	    + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "    
-        		+ "} ORDER BY DESC(?scoretot)";
-        
-       
-        query = QueryFactory.create(q) ;
+
+        q = "prefix foaf: <http://xmlns.com/foaf/0.1/> "
+                + "prefix text: <http://jena.apache.org/text#> "
+                + "prefix dct:	<http://purl.org/dc/terms/> "
+                + "Select ?x ?score1 ?score2 ?scoretot where { "
+                + "optional {(?x ?score2) text:query (dct:description 'music' )}. "
+                + "optional {(?x ?score1) text:query (foaf:name 'music' )}. "
+                + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "
+                + "} ORDER BY DESC(?scoretot)";
+
+
+        query = QueryFactory.create(q);
         try (QueryExecution qexec = QueryExecutionFactory.create(query, ds)) {
-          ResultSet results = qexec.execSelect() ;
-          for ( ; results.hasNext() ; ) {
-            QuerySolution soln = results.nextSolution() ;
-            System.out.println(soln);          
-          }
+            ResultSet results = qexec.execSelect();
+            for (; results.hasNext(); ) {
+                QuerySolution soln = results.nextSolution();
+                System.out.println(soln);
+            }
         }
-        
-      //para eliminar duplicados quitamos los score
+
+        //para eliminar duplicados quitamos los score
         System.out.println("---------------------------------------------");
         System.out.println("Resultados finales eliminando los duplicados");
         System.out.println("---------------------------------------------");
-                  
-        q ="prefix foaf: <http://xmlns.com/foaf/0.1/> "
-        		+ "prefix text: <http://jena.apache.org/text#> "
-        		+ "prefix dct:	<http://purl.org/dc/terms/> "
-        		+ "Select distinct ?x  where { "   		
-        	    + "optional {(?x ?score2) text:query (dct:description 'music' )}. "
-        	    + "optional {(?x ?score1) text:query (foaf:name 'music' )}. "
-        	    + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "    
-        		+ "} ORDER BY DESC(?scoretot)";
-        
-        query = QueryFactory.create(q) ;
+
+        q = "prefix foaf: <http://xmlns.com/foaf/0.1/> "
+                + "prefix text: <http://jena.apache.org/text#> "
+                + "prefix dct:	<http://purl.org/dc/terms/> "
+                + "Select distinct ?x  where { "
+                + "optional {(?x ?score2) text:query (dct:description 'music' )}. "
+                + "optional {(?x ?score1) text:query (foaf:name 'music' )}. "
+                + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "
+                + "} ORDER BY DESC(?scoretot)";
+
+        query = QueryFactory.create(q);
         try (QueryExecution qexec = QueryExecutionFactory.create(query, ds)) {
-          ResultSet results = qexec.execSelect() ;
-          for ( ; results.hasNext() ; ) {
-            QuerySolution soln = results.nextSolution() ;
-            System.out.println(soln);          
-          }
+            ResultSet results = qexec.execSelect();
+            for (; results.hasNext(); ) {
+                QuerySolution soln = results.nextSolution();
+                System.out.println(soln);
+            }
         }
-        
-		
-	}
+
+        // foaf:name y foaf:description se tratan como texto, no se aplica ningún proceso
+
+        // la segunda consulta está mal porque al ser una unión, cuando encuentra el primer score ya no calcula el segundo
+
+        // en la tercera consulta aparece taiwan 3 veces porque tiene 2 nombres y 2 descripciones (y todas coinciden con la búsqueda), por tanto aparecen las 4 combinaciones
+
+        // ejercicio
+        System.out.println("---------------------------------------------");
+        System.out.println("ejercicio");
+        System.out.println("---------------------------------------------");
+
+        q = "prefix foaf: <http://xmlns.com/foaf/0.1/> "
+                + "prefix text: <http://jena.apache.org/text#> "
+                + "prefix dct:	<http://purl.org/dc/terms/> "
+                + "Select ?x ?score1 ?score2 ?scoretot where { "
+                + "?x <http://www.w3.org/1999/02/22_rdf_syntax_ns#type> <http://purl.org/ontology/mo/Label>. "
+                + "optional {(?x ?score2) text:query (dct:description 'music' )}. "
+                + "optional {(?x ?score1) text:query (foaf:name 'music' )}. "
+                + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "
+                + "} ORDER BY DESC(?scoretot)";
+
+
+        query = QueryFactory.create(q);
+        try (QueryExecution qexec = QueryExecutionFactory.create(query, ds)) {
+            ResultSet results = qexec.execSelect();
+            for (; results.hasNext(); ) {
+                QuerySolution soln = results.nextSolution();
+                System.out.println(soln);
+            }
+        }
+
+        // aparecen elementos con score 0 ya que los scores son opcionales, esas entradas corresponden con elementos de tipo Label que no tienen score
+
+        // para arreglarlo basta colocar la restricción después de los opcionales
+
+        // ejercicio
+        System.out.println("---------------------------------------------");
+        System.out.println("ejercicio arreglado");
+        System.out.println("---------------------------------------------");
+
+        q = "prefix foaf: <http://xmlns.com/foaf/0.1/> "
+                + "prefix text: <http://jena.apache.org/text#> "
+                + "prefix dct:	<http://purl.org/dc/terms/> "
+                + "Select ?x ?score1 ?score2 ?scoretot where { "
+                + "optional {(?x ?score2) text:query (dct:description 'music' )}. "
+                + "optional {(?x ?score1) text:query (foaf:name 'music' )}. "
+                + "?x <http://www.w3.org/1999/02/22_rdf_syntax_ns#type> <http://purl.org/ontology/mo/Label>. "
+                + "bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot) "
+                + "} ORDER BY DESC(?scoretot)";
+
+
+        query = QueryFactory.create(q);
+        try (QueryExecution qexec = QueryExecutionFactory.create(query, ds)) {
+            ResultSet results = qexec.execSelect();
+            for (; results.hasNext(); ) {
+                QuerySolution soln = results.nextSolution();
+                System.out.println(soln);
+            }
+        }
+    }
 }
