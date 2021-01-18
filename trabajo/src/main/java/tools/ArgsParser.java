@@ -109,6 +109,12 @@ public class ArgsParser {
 
     // ------------------------- private -------------------------
 
+    /**
+     * Prints the usage message, an optional error, and exits
+     *
+     * @param reason specific error to show (null for nothing)
+     * @param status specific status to return
+     */
     private void exit(String reason, int status) {
         System.out.println("Usage: java " + getMainName() + " " +
                 required.stream().map(v -> v.name + " " + IntStream.range(1, v.amount + 1).mapToObj(i -> "{param" + i + "}").collect(Collectors.joining(" "))).collect(Collectors.joining(" ")) + " " +
@@ -122,6 +128,11 @@ public class ArgsParser {
         System.exit(status);
     }
 
+    /**
+     * In c++ you can access argv[0] to know the name of the program, in java you need to do this
+     *
+     * @return the name of the program (the main java file)
+     */
     private String getMainName() {
         StackTraceElement[] stack = Thread.currentThread().getStackTrace();
         return stack[stack.length - 1].getClassName();

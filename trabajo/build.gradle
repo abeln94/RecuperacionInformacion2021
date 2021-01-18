@@ -19,4 +19,9 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.lucene/lucene-core
     compile group: 'org.apache.lucene', name: 'lucene-analyzers-common', version: '8.6.3'
 
+    // https://mvnrepository.com/artifact/org.apache.jena/jena-core
+    compile group: 'org.apache.jena', name: 'jena-core', version: '3.4.0'
+    // https://mvnrepository.com/artifact/com.github.galigator.openllet/openllet-jena
+    compile group: 'com.github.galigator.openllet', name: 'openllet-jena', version: '2.6.5'
+
 }
