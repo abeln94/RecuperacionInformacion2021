@@ -47,6 +47,8 @@ public class SemanticGenerator {
         // parse files
         Extractor extractor = new Extractor();
         extractor.indexPath(docsPath);
+
+        System.out.println("Indexing files");
         for (File file : extractor.getFiles()) {
             String path = file.getPath();
             path = path.substring(path.lastIndexOf("\\") + 1);
@@ -57,7 +59,7 @@ public class SemanticGenerator {
                 // parse XML dom
                 org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
 
-                // identifier
+                // create main document
                 String id = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_IDENTIFIER).item(0).getTextContent();
                 Resource resource = model.createResource(id);
 
@@ -82,6 +84,9 @@ public class SemanticGenerator {
                         continue;
                 }
                 resource.addProperty(RDF.type, type);
+
+                // identifier
+                resource.addProperty(pRI("path"), path);
 
                 // date
                 addProperty(xmlDoc, resource, FIELD_DATE, "date");
@@ -137,38 +142,18 @@ public class SemanticGenerator {
                 NodeList list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_CONTRIBUTOR);
                 for (int i = 0; i < list.getLength(); i++) {
                     // foreach contributor
-                    String text = list.item(i).getTextContent().strip();
-                    Resource person = model.createResource(AnonId.create(text))
-                            .addProperty(RDF.type, pRI("person"));
-                    String[] last_first = text.split(",");
-                    if (last_first.length >= 2) {
-                        // has first and last name
-                        person.addProperty(pRI("lastName"), last_first[0].strip());
-                        person.addProperty(pRI("firstName"), last_first[1].strip());
-                    } else {
-                        // only has firstname
-                        person.addProperty(pRI("firstName"), last_first[0].strip());
-                    }
-                    resource.addProperty(pRI("contributor"), person);
+                    resource.addProperty(pRI("contributor"),
+                            createPerson(model, list.item(i).getTextContent().strip())
+                    );
                 }
 
                 // creator
                 list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_CREATOR);
                 for (int i = 0; i < list.getLength(); i++) {
                     // foreach creator
-                    String text = list.item(i).getTextContent().strip();
-                    Resource person = model.createResource(AnonId.create(text))
-                            .addProperty(RDF.type, pRI("person"));
-                    String[] last_first = text.split(",");
-                    if (last_first.length >= 2) {
-                        // has first and last name
-                        person.addProperty(pRI("lastName"), last_first[0].strip());
-                        person.addProperty(pRI("firstName"), last_first[1].strip());
-                    } else {
-                        // only has firstname
-                        person.addProperty(pRI("firstName"), last_first[0].strip());
-                    }
-                    resource.addProperty(pRI("creator"), person);
+                    resource.addProperty(pRI("creator"),
+                            createPerson(model, list.item(i).getTextContent().strip())
+                    );
                 }
 
             } catch (Exception e) {
@@ -178,8 +163,13 @@ public class SemanticGenerator {
             }
         }
 
+        // infer new data
+        System.out.println("Infer new data");
+//        model = ModelFactory.createInfModel(PelletReasonerFactory.theInstance().create(), model);
+        model = ModelFactory.createRDFSModel(model);
 
         // save the model
+        System.out.println("Save model");
         model.write(new FileOutputStream(rdfPath), "RDF/XML-ABBREV");
 
     }
@@ -189,5 +179,21 @@ public class SemanticGenerator {
         for (int i = 0; i < list.getLength(); i++) {
             resource.addProperty(pRI(property), list.item(i).getTextContent().strip());
         }
+    }
+
+    static private Resource createPerson(Model model, String text) {
+        Resource person = model.createResource(AnonId.create(text))
+                .addProperty(RDF.type, pRI("person"));
+
+        String[] last_first = text.split(",");
+        if (last_first.length >= 2) {
+            // has first and last name
+            person.addProperty(pRI("lastName"), last_first[0].strip());
+            person.addProperty(pRI("firstName"), last_first[1].strip());
+        } else {
+            // only has firstname
+            person.addProperty(pRI("firstName"), last_first[0].strip());
+        }
+        return person;
     }
 }

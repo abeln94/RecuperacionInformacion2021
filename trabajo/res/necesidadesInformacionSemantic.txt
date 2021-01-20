@@ -1,0 +1,1 @@
+105-5 SELECT ?path WHERE { ?doc ri:path ?path. ?doc a ri:document. {?doc ri:subject 'caciquismo'} UNION {?doc ri:subject 'dictadura'} UNION {?doc ri:subject 'represión política'}. {?doc ri:subject 'huesca'} UNION {?doc ri:subject 'españa'}. }

@@ -13,7 +13,7 @@ ri:document		a	rdfs:Class.
 # tfg es un subtipo de documento para trabajos fin de grado
 ri:tfg			a	rdfs:Class;
 				rdfs:subClassOf ri:document;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Trabajo_de_fin_de_grado".
+				rdfs:label	"https://es.wikipedia.org/wiki/Trabajo_de_fin_de_grado".
 			
 # tfm es un subtipo de documento para trabajos fin de master
 ri:tfm			a	rdfs:Class;
@@ -22,16 +22,16 @@ ri:tfm			a	rdfs:Class;
 # pfc es un subtipo de documento para proyectos fin de carrera
 ri:pfc			a	rdfs:Class;
 				rdfs:subClassOf ri:document;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Proyecto_fin_de_carrera".
+				rdfs:label	"https://es.wikipedia.org/wiki/Proyecto_fin_de_carrera".
 
 # tesis es un subtipo de documento para trabajos finales de doctorado
 ri:tesis		a	rdfs:Class;
 				rdfs:subClassOf ri:document;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Doctorado".
+				rdfs:label	"https://es.wikipedia.org/wiki/Doctorado".
 			
 # una universidad sirve para saber donde ha sido publicado un documento
 ri:university	a	rdfs:Class;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Universidad".
+				rdfs:label	"https://es.wikipedia.org/wiki/Universidad".
 
 # un departamento, perteneciente a una universidad, sirve para saber donde ha sido publicado un documento
 ri:department	a	rdfs:Class;
@@ -43,7 +43,7 @@ ri:area			a	rdfs:Class;
 			
 # una persona sirve para saber quien es el autor/director de un documento
 ri:person		a	rdfs:Class;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Persona".
+				rdfs:label	"https://es.wikipedia.org/wiki/Persona".
 			
 			
 ############################
@@ -54,13 +54,13 @@ ri:person		a	rdfs:Class;
 ri:contributor	a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	ri:person;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Tutor".
+				rdfs:label	"https://es.wikipedia.org/wiki/Tutor".
 
 # tiene como alumno (autor) a una persona
 ri:creator		a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	ri:person;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Alumno".
+				rdfs:label	"https://es.wikipedia.org/wiki/Alumno".
 
 # fue publicado en una fecha
 ri:date			a	rdf:Property;
@@ -76,7 +76,7 @@ ri:description	a	rdf:Property;
 ri:language		a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	rdfs:Literal;
-				rdfs:Label	 "https://es.wikipedia.org/wiki/Idioma".
+				rdfs:label	 "https://es.wikipedia.org/wiki/Idioma".
 
 # se publicó en una universidad/departamento/area
 ri:publisher	a	rdf:Property;
@@ -102,12 +102,12 @@ ri:relation		a	rdf:Property;
 ri:rights		a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	xsd:anyURI;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Derecho_de_autor".
+				rdfs:label	"https://es.wikipedia.org/wiki/Derecho_de_autor".
 
-# tiene un identificador
-ri:identifier	a	rdf:Property;
+# tiene un path
+ri:path         a	rdf:Property;
 				rdfs:domain	ri:document;
-				rdfs:range	xsd:anyURI.
+				rdfs:range	rdfs:Literal.
 
 
 ######################################################
@@ -128,10 +128,10 @@ ri:name			a	rdf:Property;
 ri:firstName	a	rdf:Property;
 				rdfs:domain	ri:person;
 				rdfs:range	rdfs:Literal;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Nombre_de_pila".
+				rdfs:label	"https://es.wikipedia.org/wiki/Nombre_de_pila".
 
 # su apellido/s es/son
 ri:lastName		a	rdf:Property;
 				rdfs:domain	ri:person;
 				rdfs:range	rdfs:Literal;
-				rdfs:Label	"https://es.wikipedia.org/wiki/Apellido".
+				rdfs:label	"https://es.wikipedia.org/wiki/Apellido".
