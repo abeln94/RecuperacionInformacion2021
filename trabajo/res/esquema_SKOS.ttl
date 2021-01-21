@@ -1,0 +1,47 @@
+@prefix	rdf:	<http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix	rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:    <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix dct:    <http://purl.org/dc/terms/> .
+@prefix foaf:   <http://xmlns.com/foaf/0.1/> .
+@prefix	ric:    <http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#> .
+
+
+ric:caciquismo a skos:Concept.
+ric:dictadura a skos:Concept.
+ric:represion_politica a skos:Concept.
+
+ric:españa a skos:Concept.
+ric:huesca a skos:Concept;
+    skos:broader ric:españa.
+
+ric:ingenieria a skos:Concept.
+ric:ingenieria_biomedica a skos:Concept;
+    skos:broader ric:ingenieria.
+
+ric:enfermedades_neurodegenerativas a skos:Concept.
+ric:alzheimer a skos:Concept;
+    skos:broader ric:enfermedades_neurodegenerativas.
+ric:parkinson a skos:Concept;
+    skos:broader ric:enfermedades_neurodegenerativas.
+
+ric:economia a skos:Concept.
+ric:crisis a skos:Concept.
+ric:partidos_politicos a skos:Concept.
+ric:social_aspecto a skos:Concept.
+
+ric:bioinformatica a skos:Concept;
+    skos:preflabel "bioinformática"@es;
+    skos:altLabel "biología computacional"@es;
+    skos:prefLabel "bioinformatics"@en;
+    skos:altLabel "computational biology"@en.
+
+ric:filogenetica a skos:Concept;
+    skos:preflabel "filogenetica"@es;
+    skos:prefLabel "phylogenetics"@en.
+
+ric:informatica a skos:Concept;
+    skos:broader ric:ingenieria;
+    skos:preflabel "informática"@es;
+    skos:prefLabel "computer science"@en.

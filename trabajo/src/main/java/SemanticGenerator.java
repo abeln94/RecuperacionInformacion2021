@@ -1,7 +1,10 @@
 import indexfiles.extractor.Extractor;
+import org.apache.jena.datatypes.RDFDatatype;
+import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.rdf.model.*;
 import org.apache.jena.util.FileManager;
 import org.apache.jena.vocabulary.RDF;
+import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import tools.ArgsParser;
 
@@ -16,10 +19,15 @@ import static indexfiles.parser.RecordsDcParser.*;
 public class SemanticGenerator {
 
     private static final Model m = ModelFactory.createDefaultModel();
-    private static final String riUri = "http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#";
+    public static final String riUri = "http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#";
+    public static final String ricUri = "http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#";
 
-    private static Property pRI(String name) {
+    public static Property pRI(String name) {
         return m.createProperty(riUri, name);
+    }
+
+    public static Property pRIC(String name) {
+        return m.createProperty(ricUri, name);
     }
 
 
@@ -42,7 +50,7 @@ public class SemanticGenerator {
         Model model = FileManager.get().loadModel(skosPath, "TURTLE");
 
         // add the other model
-        //model.add(FileManager.get().loadModel(owlPath, "TURTLE"));
+        model.add(FileManager.get().loadModel(owlPath, "TURTLE"));
 
         // parse files
         Extractor extractor = new Extractor();
@@ -55,6 +63,7 @@ public class SemanticGenerator {
 
 
             try (FileInputStream fis = new FileInputStream(file)) {
+                NodeList list;
 
                 // parse XML dom
                 org.w3c.dom.Document xmlDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(fis);
@@ -89,25 +98,31 @@ public class SemanticGenerator {
                 resource.addProperty(pRI("path"), path);
 
                 // date
-                addProperty(xmlDoc, resource, FIELD_DATE, "date");
+                addProperty(xmlDoc, resource, FIELD_DATE, "date", XSDDatatype.XSDgYear);
 
                 // description
-                addProperty(xmlDoc, resource, FIELD_DESCRIPTION, "description");
+                addProperty(xmlDoc, resource, FIELD_DESCRIPTION, "description", null);
 
                 // language
-                addProperty(xmlDoc, resource, FIELD_LANGUAGE, "language");
+                addProperty(xmlDoc, resource, FIELD_LANGUAGE, "language", null);
 
                 // subject
-                addProperty(xmlDoc, resource, FIELD_SUBJECT, "subject");
+                addProperty(xmlDoc, resource, FIELD_SUBJECT, "subject", null);
+                // as concepts
+//                list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_SUBJECT);
+//                for (int i = 0; i < list.getLength(); i++) {
+//                    String name = list.item(i).getTextContent().strip().replaceAll(" ", "_").toLowerCase();
+//                    resource.addProperty(RDF.type, pRIC(name));
+//                }
 
                 // title
-                addProperty(xmlDoc, resource, FIELD_TITLE, "title");
+                addProperty(xmlDoc, resource, FIELD_TITLE, "title", null);
 
                 // relation
-                addProperty(xmlDoc, resource, FIELD_RELATION, "relation");
+//                addProperty(xmlDoc, resource, FIELD_RELATION, "relation", XSDDatatype.XSDanyURI);
 
                 // rights
-                addProperty(xmlDoc, resource, FIELD_RIGHTS, "rights");
+//                addProperty(xmlDoc, resource, FIELD_RIGHTS, "rights", XSDDatatype.XSDanyURI);
 
 
                 // publisher
@@ -139,7 +154,7 @@ public class SemanticGenerator {
                 }
 
                 // contributor
-                NodeList list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_CONTRIBUTOR);
+                list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_CONTRIBUTOR);
                 for (int i = 0; i < list.getLength(); i++) {
                     // foreach contributor
                     resource.addProperty(pRI("contributor"),
@@ -161,6 +176,9 @@ public class SemanticGenerator {
                 System.err.println("Can't parse file " + file);
                 e.printStackTrace();
             }
+
+//            // only 1 file, for testing
+//            break;
         }
 
         // infer new data
@@ -174,10 +192,13 @@ public class SemanticGenerator {
 
     }
 
-    static private void addProperty(org.w3c.dom.Document document, Resource resource, String tag, String property) {
+    static private void addProperty(Document document, Resource resource, String tag, String property, RDFDatatype type) {
         NodeList list = document.getElementsByTagName(PREFIX_DC + tag);
         for (int i = 0; i < list.getLength(); i++) {
-            resource.addProperty(pRI(property), list.item(i).getTextContent().strip());
+            if (type == null)
+                resource.addProperty(pRI(property), list.item(i).getTextContent().strip());
+            else
+                resource.addProperty(pRI(property), list.item(i).getTextContent().strip(), type);
         }
     }
 

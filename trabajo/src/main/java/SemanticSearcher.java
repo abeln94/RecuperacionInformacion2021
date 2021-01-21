@@ -2,9 +2,7 @@ import org.apache.jena.query.*;
 import org.apache.jena.query.text.EntityDefinition;
 import org.apache.jena.query.text.TextDatasetFactory;
 import org.apache.jena.query.text.TextIndexConfig;
-import org.apache.jena.rdf.model.ResourceFactory;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.vocabulary.DCTerms;
 import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
@@ -30,8 +28,10 @@ public class SemanticSearcher {
 
 
         //definimos la configuración del repositorio indexado
-        EntityDefinition entDef = new EntityDefinition("uri", "name", ResourceFactory.createProperty("http://xmlns.com/foaf/0.1/", "name"));
-        entDef.set("description", DCTerms.description.asNode());
+        EntityDefinition entDef = new EntityDefinition("uri", "default");
+        entDef.set("subject", SemanticGenerator.pRI("subject").asNode());
+        entDef.set("description", SemanticGenerator.pRI("description").asNode());
+        entDef.set("title", SemanticGenerator.pRI("title").asNode());
         TextIndexConfig config = new TextIndexConfig(entDef);
         config.setAnalyzer(new SpanishAnalyzer());
         config.setQueryAnalyzer(new SpanishAnalyzer());
@@ -53,7 +53,10 @@ public class SemanticSearcher {
             String id = sc.next();
             String query_string = sc.nextLine();
 
-            query_string = "prefix ri: <http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#> \n" + query_string;
+            query_string = "prefix ri: <http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#> \n"
+                    + "prefix ric: <http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#> \n"
+                    + "prefix text: <http://jena.apache.org/text#> \n"
+                    + query_string;
 
             Query query = QueryFactory.create(query_string);
             try (QueryExecution qexec = QueryExecutionFactory.create(query, ds)) {

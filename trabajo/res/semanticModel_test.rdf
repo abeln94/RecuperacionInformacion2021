@@ -1,0 +1,630 @@
+<rdf:RDF
+    xmlns:dct="http://purl.org/dc/terms/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:owl="http://www.w3.org/2002/07/owl#"
+    xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+    xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+    xmlns:ric="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#"
+    xmlns:ri="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#"
+    xmlns:foaf="http://xmlns.com/foaf/0.1/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#">
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tesis">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Thing"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    </rdfs:subClassOf>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tesis"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:disjointWith>
+    <rdfs:label>https://es.wikipedia.org/wiki/Doctorado</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#department">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Thing"/>
+    </rdfs:subClassOf>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#department"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:disjointWith>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Thing">
+    <owl:equivalentClass rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:complementOf>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:complementOf>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:disjointWith>
+    <rdfs:label>https://es.wikipedia.org/wiki/Persona</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:disjointWith>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.w3.org/2004/02/skos/core#Concept">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:equivalentClass rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:disjointWith>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfg">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfg"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing"/>
+    </owl:disjointWith>
+    <rdfs:label>https://es.wikipedia.org/wiki/Trabajo_de_fin_de_grado</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://www.w3.org/2002/07/owl#Nothing">
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#pfc"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#department"/>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tesis"/>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfm"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <rdfs:subClassOf>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#area"/>
+    </rdfs:subClassOf>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfg"/>
+    <owl:equivalentClass rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
+    <owl:complementOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+    <owl:disjointWith rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#pfc"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#department"/>
+    <owl:disjointWith rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
+    <owl:disjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <owl:disjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tesis"/>
+    <owl:disjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfm"/>
+    </owl:disjointWith>
+    <owl:disjointWith>
+      <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#area"/>
+    </owl:disjointWith>
+    <owl:disjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfg"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfm">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfm"/>
+    <owl:disjointWith rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#pfc">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#pfc"/>
+    <owl:disjointWith rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
+    <rdfs:label>https://es.wikipedia.org/wiki/Proyecto_fin_de_carrera</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university">
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    <owl:disjointWith rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
+    <rdfs:label>https://es.wikipedia.org/wiki/Universidad</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:Class rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#area">
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    <rdfs:subClassOf rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdfs:subClassOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#department"/>
+    <owl:equivalentClass rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#area"/>
+    <owl:disjointWith rdf:resource="http://www.w3.org/2002/07/owl#Nothing"/>
+    <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  </owl:Class>
+  <owl:ObjectProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#publisher">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#publisher"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </rdfs:subPropertyOf>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#publisher"/>
+    <owl:propertyDisjointWith>
+      <owl:ObjectProperty rdf:about="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    </owl:propertyDisjointWith>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.w3.org/2002/07/owl#topObjectProperty">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#TransitiveProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#ReflexiveProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <owl:inverseOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <owl:propertyDisjointWith>
+      <owl:ObjectProperty rdf:about="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    </owl:propertyDisjointWith>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.w3.org/2002/07/owl#bottomObjectProperty">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#SymmetricProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#AsymmetricProperty"/>
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#IrreflexiveProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#publisher"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#contributor"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#creator"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    <rdfs:subPropertyOf>
+      <owl:ObjectProperty rdf:about="http://www.w3.org/2004/02/skos/core#broader"/>
+    </rdfs:subPropertyOf>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    <owl:inverseOf rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    <owl:propertyDisjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#publisher"/>
+    <owl:propertyDisjointWith>
+      <owl:ObjectProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#contributor"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:ObjectProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#creator"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    <owl:propertyDisjointWith>
+      <owl:ObjectProperty rdf:about="http://www.w3.org/2004/02/skos/core#broader"/>
+    </owl:propertyDisjointWith>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <rdfs:range rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    <rdfs:range rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#contributor">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#contributor"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#contributor"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <rdfs:label>https://es.wikipedia.org/wiki/Tutor</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://www.w3.org/2004/02/skos/core#broader">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2004/02/skos/core#broader"/>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2004/02/skos/core#broader"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+  </owl:ObjectProperty>
+  <owl:ObjectProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#creator">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#creator"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#creator"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomObjectProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <rdfs:label>https://es.wikipedia.org/wiki/Alumno</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:ObjectProperty>
+  <owl:DatatypeProperty rdf:about="http://www.w3.org/2004/02/skos/core#altLabel">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2004/02/skos/core#altLabel"/>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </rdfs:subPropertyOf>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2004/02/skos/core#altLabel"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    </owl:propertyDisjointWith>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#topDataProperty">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    </owl:propertyDisjointWith>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#lastName">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#lastName"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#lastName"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    </owl:propertyDisjointWith>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <rdfs:range>
+      <rdfs:Datatype rdf:about="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    </rdfs:range>
+    <rdfs:label>https://es.wikipedia.org/wiki/Apellido</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#language">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#language"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#language"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    </owl:propertyDisjointWith>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:label>https://es.wikipedia.org/wiki/Idioma</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#date">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#date"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#date"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#relation"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#rights"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    </owl:propertyDisjointWith>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range>
+      <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#gYear"/>
+    </rdfs:range>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.w3.org/2002/07/owl#bottomDataProperty">
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#subject"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#language"/>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#title"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2004/02/skos/core#altLabel"/>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#rights"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#path"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#lastName"/>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#firstName"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#name"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#relation"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#date"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#description"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2004/02/skos/core#preflabel"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2004/02/skos/core#prefLabel"/>
+    </rdfs:subPropertyOf>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#subject"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#language"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#title"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2004/02/skos/core#altLabel"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#rights"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#path"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#lastName"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#firstName"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#name"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#relation"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#date"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#description"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2004/02/skos/core#preflabel"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith>
+      <owl:DatatypeProperty rdf:about="http://www.w3.org/2004/02/skos/core#prefLabel"/>
+    </owl:propertyDisjointWith>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:range>
+      <rdfs:Datatype rdf:about="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    </rdfs:range>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#gYear"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.w3.org/2004/02/skos/core#prefLabel">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2004/02/skos/core#prefLabel"/>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2004/02/skos/core#prefLabel"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#firstName">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#firstName"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#firstName"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdfs:label>https://es.wikipedia.org/wiki/Nombre_de_pila</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#rights">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#rights"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#rights"/>
+    <owl:propertyDisjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#date"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <rdfs:label>https://es.wikipedia.org/wiki/Derecho_de_autor</rdfs:label>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#relation">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#relation"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#relation"/>
+    <owl:propertyDisjointWith rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#date"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#anyURI"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://www.w3.org/2004/02/skos/core#preflabel">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2004/02/skos/core#preflabel"/>
+    <owl:equivalentProperty rdf:resource="http://www.w3.org/2004/02/skos/core#preflabel"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#path">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#path"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#path"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#name">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#name"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#name"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#university"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#subject">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#subject"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#subject"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#title">
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#title"/>
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#title"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <owl:DatatypeProperty rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#description">
+    <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    <rdfs:subPropertyOf rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#description"/>
+    <owl:equivalentProperty rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#description"/>
+    <owl:propertyDisjointWith rdf:resource="http://www.w3.org/2002/07/owl#bottomDataProperty"/>
+    <rdfs:domain rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdfs:range rdf:resource="http://www.w3.org/2000/01/rdf-schema#Literal"/>
+    <rdf:type rdf:resource="http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"/>
+  </owl:DatatypeProperty>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#españa">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#españa"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#ingenieria">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#ingenieria"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#enfermedades_neurodegenerativas">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#enfermedades_neurodegenerativas"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#alzheimer">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#alzheimer"/>
+    <skos:broader rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#enfermedades_neurodegenerativas"/>
+  </skos:Concept>
+  <ri:university rdf:nodeID="A0">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <rdf:type rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#department"/>
+    <owl:sameAs rdf:nodeID="A0"/>
+    <ri:name>Departamento de Lingüística General e Hispánica</ri:name>
+  </ri:university>
+  <ri:university rdf:nodeID="A1">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:nodeID="A1"/>
+    <ri:name>Universidad de Zaragoza</ri:name>
+  </ri:university>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#dictadura">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#dictadura"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#parkinson">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#parkinson"/>
+    <skos:broader rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#enfermedades_neurodegenerativas"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#huesca">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#huesca"/>
+    <skos:broader rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#españa"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#represion_politica">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#represion_politica"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#informatica">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#informatica"/>
+    <skos:broader rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#ingenieria"/>
+    <skos:preflabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >informática</skos:preflabel>
+    <skos:prefLabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >computer science</skos:prefLabel>
+    <skos:preflabel xml:lang="es">informática</skos:preflabel>
+    <skos:prefLabel xml:lang="en">computer science</skos:prefLabel>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#bioinformatica">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#bioinformatica"/>
+    <skos:altLabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >biología computacional</skos:altLabel>
+    <skos:altLabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >computational biology</skos:altLabel>
+    <skos:preflabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >bioinformática</skos:preflabel>
+    <skos:prefLabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >bioinformatics</skos:prefLabel>
+    <skos:preflabel xml:lang="es">bioinformática</skos:preflabel>
+    <skos:altLabel xml:lang="es">biología computacional</skos:altLabel>
+    <skos:prefLabel xml:lang="en">bioinformatics</skos:prefLabel>
+    <skos:altLabel xml:lang="en">computational biology</skos:altLabel>
+  </skos:Concept>
+  <owl:Thing rdf:about="http://zaguan.unizar.es/record/10002">
+    <rdf:type rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#document"/>
+    <rdf:type rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#tfg"/>
+    <owl:sameAs rdf:resource="http://zaguan.unizar.es/record/10002"/>
+    <ri:creator>
+      <owl:Thing rdf:nodeID="A2">
+        <rdf:type rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+        <owl:sameAs rdf:nodeID="A2"/>
+        <ri:firstName>Ana Cristina</ri:firstName>
+        <ri:lastName>Remón Esteban</ri:lastName>
+      </owl:Thing>
+    </ri:creator>
+    <ri:publisher rdf:nodeID="A0"/>
+    <ri:publisher>
+      <ri:university rdf:nodeID="A3">
+        <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+        <rdf:type rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#department"/>
+        <rdf:type rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#area"/>
+        <owl:sameAs rdf:nodeID="A3"/>
+        <ri:name>Área de Comunicación Audiovisual y Publicidad</ri:name>
+      </ri:university>
+    </ri:publisher>
+    <ri:publisher rdf:nodeID="A1"/>
+    <ri:date rdf:datatype="http://www.w3.org/2001/XMLSchema#gYear"
+    >2013</ri:date>
+    <ri:subject>percepción</ri:subject>
+    <ri:subject>valores</ri:subject>
+    <ri:subject>telebasura</ri:subject>
+    <ri:subject>audiencia</ri:subject>
+    <ri:subject>Graduado en Periodismo</ri:subject>
+    <ri:subject>límites</ri:subject>
+    <ri:subject>moral</ri:subject>
+    <ri:subject>ética</ri:subject>
+    <ri:subject>público</ri:subject>
+    <ri:subject>televisión contenidos</ri:subject>
+    <ri:contributor>
+      <owl:Thing rdf:nodeID="A4">
+        <rdf:type rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#person"/>
+        <owl:sameAs rdf:nodeID="A4"/>
+        <ri:firstName>José Antonio</ri:firstName>
+        <ri:lastName>Gabelas Barroso</ri:lastName>
+      </owl:Thing>
+    </ri:contributor>
+    <ri:language>spa</ri:language>
+    <ri:title>La telebasura como el fenómeno televisivo imperante</ri:title>
+    <ri:path>oai_zaguan.unizar.es_10002.xml</ri:path>
+    <ri:description>La televisión ocupa un espacio muy importante en el día a día de todo el mundo. La influencia que ésta ejerce sobre los públicos es muy grande y, por ello, la evolución que ha tenido la televisión de un tiempo a esta parte afecta de manera muy directa a la población. La telebasura es un fenómeno del que todo el mundo habla pero del que se tienen muy pocas premisas académicas. Se trata de un término subjetivo que no implica que todas las personas sean capaces de captarlo de la misma manera. Puede ser que lo que una persona considere telebasura no lo sea para otra. Entran en juego diferentes aspectos que hacen que el público se enfrente a los contenidos de la televisión de una manera diferente, dependiendo de sus condiciones personales, sus experiencias, sus prejuicios… los individuos tienen diferente escala de valores y por ello consideran apropiadas diferentes actuaciones o contenidos.  Es por esta razón por lo que resulta complicado investigar una serie de parámetros que se establezcan como baremo televisivo para, de este modo,  diferenciar lo que es telebasura de lo que no. Resulta muy complicado distinguirla pero, a pesar de ello, está muy introducida en la televisión y en la sociedad en general de una manera tan fuerte que incluso resulta complicado, en más de una ocasión, ser consciente de su existencia.</ri:description>
+  </owl:Thing>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#partidos_politicos">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#partidos_politicos"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#filogenetica">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#filogenetica"/>
+    <skos:preflabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >filogenetica</skos:preflabel>
+    <skos:prefLabel rdf:datatype="http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+    >phylogenetics</skos:prefLabel>
+    <skos:preflabel xml:lang="es">filogenetica</skos:preflabel>
+    <skos:prefLabel xml:lang="en">phylogenetics</skos:prefLabel>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#crisis">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#crisis"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#economia">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#economia"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#caciquismo">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#caciquismo"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#social_aspecto">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#social_aspecto"/>
+  </skos:Concept>
+  <skos:Concept rdf:about="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#ingenieria_biomedica">
+    <rdf:type rdf:resource="http://www.w3.org/2002/07/owl#Thing"/>
+    <owl:sameAs rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#ingenieria_biomedica"/>
+    <skos:broader rdf:resource="http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#ingenieria"/>
+  </skos:Concept>
+</rdf:RDF>
