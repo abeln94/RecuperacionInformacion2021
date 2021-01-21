@@ -67,8 +67,8 @@ ri:date			a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	xsd:gYear.
 
-# tiene una descripción
-ri:description	a	rdf:Property;
+# tiene datos (descripción, titulo y temas)
+ri:data     	a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	rdfs:Literal.
 
@@ -82,27 +82,6 @@ ri:language		a	rdf:Property;
 ri:publisher	a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	ri:university.
-
-# tiene un tema (pueden ser varios)
-ri:subject		a	rdf:Property;
-				rdfs:domain	ri:document;
-				rdfs:range	rdfs:Literal.
-
-# tiene un título (pueden ser varios en idiomas distintos)
-ri:title		a	rdf:Property;
-				rdfs:domain	ri:document;
-				rdfs:range	rdfs:Literal.
-
-# está disponible en una url para poder ser descargado
-ri:relation		a	rdf:Property;
-				rdfs:domain	ri:document;
-				rdfs:range	xsd:anyURI.
-
-# se publicó bajo unos derechos de acceso disponibles en la siguiente url
-ri:rights		a	rdf:Property;
-				rdfs:domain	ri:document;
-				rdfs:range	xsd:anyURI;
-				rdfs:label	"https://es.wikipedia.org/wiki/Derecho_de_autor".
 
 # tiene un path
 ri:path         a	rdf:Property;

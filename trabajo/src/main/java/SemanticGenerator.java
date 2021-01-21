@@ -101,13 +101,13 @@ public class SemanticGenerator {
                 addProperty(xmlDoc, resource, FIELD_DATE, "date", XSDDatatype.XSDgYear);
 
                 // description
-                addProperty(xmlDoc, resource, FIELD_DESCRIPTION, "description", null);
+                addProperty(xmlDoc, resource, FIELD_DESCRIPTION, "data", null);
 
                 // language
                 addProperty(xmlDoc, resource, FIELD_LANGUAGE, "language", null);
 
                 // subject
-                addProperty(xmlDoc, resource, FIELD_SUBJECT, "subject", null);
+                addProperty(xmlDoc, resource, FIELD_SUBJECT, "data", null);
                 // as concepts
 //                list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_SUBJECT);
 //                for (int i = 0; i < list.getLength(); i++) {
@@ -116,7 +116,7 @@ public class SemanticGenerator {
 //                }
 
                 // title
-                addProperty(xmlDoc, resource, FIELD_TITLE, "title", null);
+                addProperty(xmlDoc, resource, FIELD_TITLE, "data", null);
 
                 // relation
 //                addProperty(xmlDoc, resource, FIELD_RELATION, "relation", XSDDatatype.XSDanyURI);

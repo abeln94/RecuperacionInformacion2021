@@ -28,10 +28,8 @@ public class SemanticSearcher {
 
 
         //definimos la configuración del repositorio indexado
-        EntityDefinition entDef = new EntityDefinition("uri", "default");
-        entDef.set("subject", SemanticGenerator.pRI("subject").asNode());
-        entDef.set("description", SemanticGenerator.pRI("description").asNode());
-        entDef.set("title", SemanticGenerator.pRI("title").asNode());
+        EntityDefinition entDef = new EntityDefinition("uri", "data", SemanticGenerator.pRI("data").asNode());
+        entDef.set("publisher", SemanticGenerator.pRI("publisher").asNode());
         TextIndexConfig config = new TextIndexConfig(entDef);
         config.setAnalyzer(new SpanishAnalyzer());
         config.setQueryAnalyzer(new SpanishAnalyzer());
@@ -52,10 +50,13 @@ public class SemanticSearcher {
         while (sc.hasNextLine()) {
             String id = sc.next();
             String query_string = sc.nextLine();
+            while (query_string.endsWith("\\"))
+                query_string = query_string.substring(0, query_string.length() - 1) + sc.nextLine();
 
             query_string = "prefix ri: <http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#> \n"
                     + "prefix ric: <http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#> \n"
                     + "prefix text: <http://jena.apache.org/text#> \n"
+                    + "prefix xsd: <http://www.w3.org/2001/XMLSchema#>"
                     + query_string;
 
             Query query = QueryFactory.create(query_string);
