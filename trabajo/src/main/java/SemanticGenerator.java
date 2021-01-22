@@ -1,4 +1,5 @@
 import indexfiles.extractor.Extractor;
+import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.rdf.model.*;
@@ -49,8 +50,12 @@ public class SemanticGenerator {
         // load the model
         Model model = FileManager.get().loadModel(skosPath, "TURTLE");
 
-        // add the other model
-        model.add(FileManager.get().loadModel(owlPath, "TURTLE"));
+        // add the other model (pre-inferred)
+        model.add(
+                ModelFactory.createInfModel(PelletReasonerFactory.theInstance().create(),
+                        FileManager.get().loadModel(owlPath, "TURTLE")
+                )
+        );
 
         // parse files
         Extractor extractor = new Extractor();
@@ -183,14 +188,19 @@ public class SemanticGenerator {
 
         // infer new data
         System.out.println("Infer new data");
-//        model = ModelFactory.createInfModel(PelletReasonerFactory.theInstance().create(), model);
         model = ModelFactory.createRDFSModel(model);
+
+        // clean
+        System.out.println("Clean model");
+        model = borrarRecursosInferencia(model);
 
         // save the model
         System.out.println("Save model");
         model.write(new FileOutputStream(rdfPath), "RDF/XML-ABBREV");
 
     }
+
+    // ------------------------- utils -------------------------
 
     static private void addProperty(Document document, Resource resource, String tag, String property, RDFDatatype type) {
         NodeList list = document.getElementsByTagName(PREFIX_DC + tag);
@@ -216,5 +226,57 @@ public class SemanticGenerator {
             person.addProperty(pRI("firstName"), last_first[0].strip());
         }
         return person;
+    }
+
+    /**
+     * borramos las clases del modelo owl que se añaden automáticamente al hacer la inferencia
+     * borramos las clases del modelo rdfs que se añaden automáticamente al hacer la inferencia
+     * simplemente para facilitar la visualización de la parte que nos interesa
+     * si quieres ver todo lo que genera el motor de inferencia comenta estas lineas
+     */
+    private static Model borrarRecursosInferencia(Model inf) {
+        //hacemos una copia del modelo ya que el modelo inferido es inmutable
+        Model model2 = ModelFactory.createDefaultModel();
+        model2.add(inf);
+        for (String uri : new String[]{
+                "http://www.w3.org/2002/07/owl#topDataProperty",
+                "http://www.w3.org/2002/07/owl#topObjectProperty",
+                "http://www.w3.org/2002/07/owl#Thing",
+                "http://www.w3.org/2002/07/owl#bottomObjectProperty",
+                "http://www.w3.org/2002/07/owl#Nothing",
+                "http://www.w3.org/2002/07/owl#bottomDataProperty",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#rest",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#List",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#Property",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#subject",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#first",
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#object",
+                "http://www.w3.org/2000/01/rdf-schema#Class",
+                "http://www.w3.org/2000/01/rdf-schema#label",
+                "http://www.w3.org/2000/01/rdf-schema#Resource",
+                "http://www.w3.org/2000/01/rdf-schema#ContainerMembershipProperty",
+                "http://www.w3.org/2000/01/rdf-schema#isDefinedBy",
+                "http://www.w3.org/2000/01/rdf-schema#seeAlso",
+                "http://www.w3.org/2000/01/rdf-schema#Container",
+                "http://www.w3.org/2000/01/rdf-schema#Datatype",
+                "http://www.w3.org/2000/01/rdf-schema#comment",
+                "http://www.w3.org/2000/01/rdf-schema#range",
+                "http://www.w3.org/2000/01/rdf-schema#subPropertyOf",
+                "http://www.w3.org/2000/01/rdf-schema#subClassOf",
+                "http://www.w3.org/2000/01/rdf-schema#Literal",
+                "http://www.w3.org/2000/01/rdf-schema#domain",
+                "http://www.w3.org/2000/01/rdf-schema#nil",
+        })
+            model2.removeAll(inf.createResource(uri), null, null);
+
+
+        return model2;
     }
 }

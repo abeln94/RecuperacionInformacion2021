@@ -10,7 +10,7 @@ SELECT DISTINCT ?path WHERE { \
         optional {(?doc ?score5) text:query 'españa' }. \
         optional {(?doc ?score6) text:query 'siglo XX' }. \
     } \
-    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0)+coalesce(?score6,0) as ?scoretot) \
+    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0)+coalesce(?score6,0) as ?scoretot). \
 } ORDER BY DESC(?scoretot)
 106-4 \
 SELECT DISTINCT ?path WHERE { \
@@ -23,7 +23,7 @@ SELECT DISTINCT ?path WHERE { \
         optional {(?doc ?score4) text:query 'alzheimer' }. \
         optional {(?doc ?score5) text:query 'parkinson' }. \
     } \
-    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0) as ?scoretot) \
+    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0) as ?scoretot). \
 } ORDER BY DESC(?scoretot)
 107-2 \
 SELECT DISTINCT ?path WHERE { \
@@ -36,7 +36,7 @@ SELECT DISTINCT ?path WHERE { \
         optional {(?doc ?score4) text:query 'partidos políticos' }. \
         optional {(?doc ?score5) text:query 'relevancia social' }. \
     } \
-    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0) as ?scoretot) \
+    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0) as ?scoretot). \
 } ORDER BY DESC(?scoretot)
 109-2 \
 SELECT DISTINCT ?path WHERE { \
@@ -50,20 +50,21 @@ SELECT DISTINCT ?path WHERE { \
         optional {(?doc ?score5) text:query 'filogenética' }. \
         optional {(?doc ?score6) text:query 'phylogenetics' }. \
     } \
-    ?doc ri:date ?date. FILTER ( ?date >= "2010"^^xsd:gYear && ?date <= "2018"^^xsd:gYear ) \
-    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0)+coalesce(?score6,0) as ?scoretot) \
+    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0)+coalesce(?score6,0) as ?scoretot). \
+    ?doc ri:date ?date. FILTER ( ?date >= "2010"^^xsd:gYear && ?date <= "2018"^^xsd:gYear ). \
 } ORDER BY DESC(?scoretot)
 208-1 \
 SELECT DISTINCT ?path WHERE { \
     ?doc ri:path ?path. \
     ?doc a ri:tfg. \
+    ?doc ri:date ?date. FILTER ( ?date >= "2013"^^xsd:gYear ). \
+    ?doc ?language 'spa'. \
     { \
         optional {(?doc ?score1) text:query 'informática' }. \
         optional {(?doc ?score2) text:query 'computer science' }. \
     } \
-    { ?doc ri:contributor ?contributor. ?contributor ri:firstName 'Javier' } \
+    bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot). \
+        { ?doc ri:contributor ?contributor. ?contributor ri:firstName 'Javier' } \
     UNION \
-    { ?doc ri:creator ?creator. ?creator ri:firstName 'Javier' }. \
-    ?doc ri:date ?date. FILTER ( ?date >= "2013"^^xsd:gYear ) \
-    bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0)+coalesce(?score6,0) as ?scoretot) \
+        { ?doc ri:creator ?creator. ?creator ri:firstName 'Javier' }. \
 } ORDER BY DESC(?scoretot)
