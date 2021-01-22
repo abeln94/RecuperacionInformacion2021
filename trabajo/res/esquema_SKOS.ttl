@@ -10,38 +10,44 @@
 
 ric:caciquismo a skos:Concept.
 ric:dictadura a skos:Concept.
-ric:represion_politica a skos:Concept.
+ric:represión a skos:Concept.
 
 ric:españa a skos:Concept.
 ric:huesca a skos:Concept;
     skos:broader ric:españa.
 
-ric:ingenieria a skos:Concept.
-ric:ingenieria_biomedica a skos:Concept;
-    skos:broader ric:ingenieria.
+ric:XX a skos:Concept.
 
-ric:enfermedades_neurodegenerativas a skos:Concept.
+ric:ingeniería a skos:Concept.
+ric:biomédica a skos:Concept;
+    skos:broader ric:ingeniería.
+
+ric:enfermedades a skos:Concept.
+ric:neurodegenerativas a skos:Concept;
+    skos:broader ric:enfermedades.
 ric:alzheimer a skos:Concept;
-    skos:broader ric:enfermedades_neurodegenerativas.
+    skos:broader ric:neurodegenerativas.
 ric:parkinson a skos:Concept;
-    skos:broader ric:enfermedades_neurodegenerativas.
+    skos:broader ric:neurodegenerativas.
 
-ric:economia a skos:Concept.
+ric:economía a skos:Concept.
 ric:crisis a skos:Concept.
-ric:partidos_politicos a skos:Concept.
-ric:social_aspecto a skos:Concept.
+ric:partidos a skos:Concept.
+ric:social a skos:Concept.
 
-ric:bioinformatica a skos:Concept;
-    skos:preflabel "bioinformática"@es;
-    skos:altLabel "biología computacional"@es;
-    skos:prefLabel "bioinformatics"@en;
-    skos:altLabel "computational biology"@en.
+ric:biología a skos:Concept.
+ric:biology a skos:Concept;
+    skos:exactMatch ric:biología.
+ric:bioinformática a skos:Concept;
+    skos:broader ric:biología.
+ric:bioinformatics a skos:Concept;
+    skos:exactMatch ric:bioinformática.
 
-ric:filogenetica a skos:Concept;
-    skos:preflabel "filogenetica"@es;
-    skos:prefLabel "phylogenetics"@en.
+ric:filogenética a skos:Concept.
+ric:phylogenetics a skos:Concept;
+    skos:exactMatch ric:filogenética.
 
-ric:informatica a skos:Concept;
-    skos:broader ric:ingenieria;
-    skos:preflabel "informática"@es;
-    skos:prefLabel "computer science"@en.
+ric:informática a skos:Concept;
+    skos:broader ric:ingeniería.
+ric:computer a skos:Concept;
+    skos:exactMatch ric:informática.

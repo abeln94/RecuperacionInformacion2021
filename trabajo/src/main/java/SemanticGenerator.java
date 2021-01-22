@@ -1,19 +1,23 @@
 import indexfiles.extractor.Extractor;
-import openllet.jena.PelletReasonerFactory;
 import org.apache.jena.datatypes.RDFDatatype;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.rdf.model.*;
+import org.apache.jena.reasoner.Reasoner;
+import org.apache.jena.reasoner.ReasonerRegistry;
 import org.apache.jena.util.FileManager;
 import org.apache.jena.vocabulary.RDF;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.core.SimpleAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import tools.ArgsParser;
 
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static indexfiles.parser.RecordsDcParser.*;
 
@@ -37,6 +41,8 @@ public class SemanticGenerator {
     private static String owlPath;
     private static String docsPath;
 
+    private static Boolean test = false;
+
     public static void main(String[] args) throws FileNotFoundException {
 
         // parse arguments
@@ -45,17 +51,12 @@ public class SemanticGenerator {
                 .addRequired("-skos", "the rdf file of the skos model", 1, v -> skosPath = v.get(0))
                 .addRequired("-owl", "the rdf file of the owl model of the collection", 1, v -> owlPath = v.get(0))
                 .addRequired("-docs", "the folder with the files to parse", 1, v -> docsPath = v.get(0))
+                .addOptional("-test", "flag to try things", 0, v -> test = true)
                 .parse(args);
 
-        // load the model
+        // load the models
         Model model = FileManager.get().loadModel(skosPath, "TURTLE");
-
-        // add the other model (pre-inferred)
-        model.add(
-                ModelFactory.createInfModel(PelletReasonerFactory.theInstance().create(),
-                        FileManager.get().loadModel(owlPath, "TURTLE")
-                )
-        );
+        model = model.add(FileManager.get().loadModel(owlPath, "TURTLE"));
 
         // parse files
         Extractor extractor = new Extractor();
@@ -107,21 +108,18 @@ public class SemanticGenerator {
 
                 // description
                 addProperty(xmlDoc, resource, FIELD_DESCRIPTION, "data", null);
+                addConcept(xmlDoc, resource, FIELD_DESCRIPTION, model);
 
                 // language
                 addProperty(xmlDoc, resource, FIELD_LANGUAGE, "language", null);
 
                 // subject
                 addProperty(xmlDoc, resource, FIELD_SUBJECT, "data", null);
-                // as concepts
-//                list = xmlDoc.getElementsByTagName(PREFIX_DC + FIELD_SUBJECT);
-//                for (int i = 0; i < list.getLength(); i++) {
-//                    String name = list.item(i).getTextContent().strip().replaceAll(" ", "_").toLowerCase();
-//                    resource.addProperty(RDF.type, pRIC(name));
-//                }
+                addConcept(xmlDoc, resource, FIELD_SUBJECT, model);
 
                 // title
                 addProperty(xmlDoc, resource, FIELD_TITLE, "data", null);
+                addConcept(xmlDoc, resource, FIELD_TITLE, model);
 
                 // relation
 //                addProperty(xmlDoc, resource, FIELD_RELATION, "relation", XSDDatatype.XSDanyURI);
@@ -182,13 +180,18 @@ public class SemanticGenerator {
                 e.printStackTrace();
             }
 
-//            // only 1 file, for testing
-//            break;
+            // cap elements, for testing
+            if (test && model.size() > 10000) break;
         }
 
         // infer new data
         System.out.println("Infer new data");
-        model = ModelFactory.createRDFSModel(model);
+//        Reasoner reasoner = PelletReasonerFactory.theInstance().create();
+//        Reasoner reasoner = ReasonerRegistry.getTransitiveReasoner();
+        Reasoner reasoner = ReasonerRegistry.getOWLReasoner();
+//        reasoner = reasoner.bindSchema(modelOWL/*.union(FileManager.get().loadModel("http://www.w3.org/2009/08/skos-reference/skos-owl1-dl.rdf"))*/);
+        model = ModelFactory.createInfModel(reasoner, model);
+//        model = ModelFactory.createRDFSModel(model);
 
         // clean
         System.out.println("Clean model");
@@ -205,12 +208,27 @@ public class SemanticGenerator {
     static private void addProperty(Document document, Resource resource, String tag, String property, RDFDatatype type) {
         NodeList list = document.getElementsByTagName(PREFIX_DC + tag);
         for (int i = 0; i < list.getLength(); i++) {
+            String text = list.item(i).getTextContent().strip();
             if (type == null)
-                resource.addProperty(pRI(property), list.item(i).getTextContent().strip());
+                resource.addProperty(pRI(property), text);
             else
-                resource.addProperty(pRI(property), list.item(i).getTextContent().strip(), type);
+                resource.addProperty(pRI(property), text, type);
         }
     }
+
+    static private void addConcept(Document document, Resource resource, String tag, Model model) {
+        NodeList list = document.getElementsByTagName(PREFIX_DC + tag);
+        for (int i = 0; i < list.getLength(); i++) {
+            String text = list.item(i).getTextContent().strip();
+            for (String term : tokenizeString(new SimpleAnalyzer(), text)) {
+                if (model.containsResource(pRIC(term))) {
+                    resource.addProperty(RDF.type, pRIC(term));
+                }
+//                resource.addProperty(pRI("data"), term);
+            }
+        }
+    }
+
 
     static private Resource createPerson(Model model, String text) {
         Resource person = model.createResource(AnonId.create(text))
@@ -278,5 +296,20 @@ public class SemanticGenerator {
 
 
         return model2;
+    }
+
+    public static List<String> tokenizeString(Analyzer analyzer, String string) {
+        List<String> result = new ArrayList<>();
+        try (
+                TokenStream stream = analyzer.tokenStream(null, string)) {
+            stream.reset();
+            while (stream.incrementToken()) {
+                result.add(stream.getAttribute(CharTermAttribute.class).toString());
+            }
+            stream.end();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
     }
 }

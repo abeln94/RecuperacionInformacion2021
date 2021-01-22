@@ -4,11 +4,17 @@ SELECT DISTINCT ?path WHERE { \
     ?doc a ri:document. \
     { \
         optional {(?doc ?score1) text:query 'caciquismo' }. \
+        optional { ?doc a ric:caciquismo }. \
         optional {(?doc ?score2) text:query 'dictadura' }. \
+        optional { ?doc a ric:dictadura }. \
         optional {(?doc ?score3) text:query 'represión política' }. \
+        optional { ?doc a ric:represión }. \
         optional {(?doc ?score4) text:query 'huesca' }. \
+        optional { ?doc a ric:huesca }. \
         optional {(?doc ?score5) text:query 'españa' }. \
+        optional { ?doc a ric:españa }. \
         optional {(?doc ?score6) text:query 'siglo XX' }. \
+        optional { ?doc a ric:XX }. \
     } \
     bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0)+coalesce(?score6,0) as ?scoretot). \
 } ORDER BY DESC(?scoretot)
@@ -18,10 +24,16 @@ SELECT DISTINCT ?path WHERE { \
     ?doc a ri:document. \
     { \
         optional {(?doc ?score1) text:query 'ingeniería biomédica' }. \
+        optional { ?doc a ric:ingeniería }. \
+        optional { ?doc a ric:biomédica }. \
         optional {(?doc ?score2) text:query (ri:publisher 'ingeniería') }. \
         optional {(?doc ?score3) text:query 'enfermedades neurodegenerativas' }. \
+        optional { ?doc a ric:enfermedades }. \
+        optional { ?doc a ric:neurodegenerativas }. \
         optional {(?doc ?score4) text:query 'alzheimer' }. \
+        optional { ?doc a ric:alzheimer }. \
         optional {(?doc ?score5) text:query 'parkinson' }. \
+        optional { ?doc a ric:parkinson }. \
     } \
     bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0) as ?scoretot). \
 } ORDER BY DESC(?scoretot)
@@ -31,10 +43,15 @@ SELECT DISTINCT ?path WHERE { \
     ?doc a ri:document. \
     { \
         optional {(?doc ?score1) text:query 'evolución económica' }. \
+        optional { ?doc a ric:economía }. \
         optional {(?doc ?score2) text:query 'españa' }. \
+        optional { ?doc a ric:españa }. \
         optional {(?doc ?score3) text:query 'crisis' }. \
+        optional { ?doc a ric:crisis }. \
         optional {(?doc ?score4) text:query 'partidos políticos' }. \
+        optional { ?doc a ric:partidos }. \
         optional {(?doc ?score5) text:query 'relevancia social' }. \
+        optional { ?doc a ric:social }. \
     } \
     bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0) as ?scoretot). \
 } ORDER BY DESC(?scoretot)
@@ -44,11 +61,17 @@ SELECT DISTINCT ?path WHERE { \
     ?doc a ri:document. \
     { \
         optional {(?doc ?score1) text:query 'bioinformática' }. \
+        optional { ?doc a ric:bioinformática }. \
         optional {(?doc ?score2) text:query 'biología computacional' }. \
+        optional { ?doc a ric:biología }. \
         optional {(?doc ?score3) text:query 'bioinformatics' }. \
+        optional { ?doc a ric:bioinformatics }. \
         optional {(?doc ?score4) text:query 'computational biology' }. \
+        optional { ?doc a ric:biology }. \
         optional {(?doc ?score5) text:query 'filogenética' }. \
+        optional { ?doc a ric:filogenética }. \
         optional {(?doc ?score6) text:query 'phylogenetics' }. \
+        optional { ?doc a ric:phylogenetics }. \
     } \
     bind (coalesce(?score1,0)+coalesce(?score2,0)+coalesce(?score3,0)+coalesce(?score4,0)+coalesce(?score5,0)+coalesce(?score6,0) as ?scoretot). \
     ?doc ri:date ?date. FILTER ( ?date >= "2010"^^xsd:gYear && ?date <= "2018"^^xsd:gYear ). \
@@ -61,7 +84,9 @@ SELECT DISTINCT ?path WHERE { \
     ?doc ?language 'spa'. \
     { \
         optional {(?doc ?score1) text:query 'informática' }. \
+        optional { ?doc a ric:informática }. \
         optional {(?doc ?score2) text:query 'computer science' }. \
+        optional { ?doc a ric:computer }. \
     } \
     bind (coalesce(?score1,0)+coalesce(?score2,0) as ?scoretot). \
         { ?doc ri:contributor ?contributor. ?contributor ri:firstName 'Javier' } \
