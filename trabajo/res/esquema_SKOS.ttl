@@ -14,21 +14,21 @@ ric:represión a skos:Concept.
 
 ric:españa a skos:Concept.
 ric:huesca a skos:Concept;
-    skos:broader ric:españa.
+    rdfs:subClassOf ric:españa.
 
 ric:XX a skos:Concept.
 
 ric:ingeniería a skos:Concept.
 ric:biomédica a skos:Concept;
-    skos:broader ric:ingeniería.
+    rdfs:subClassOf ric:ingeniería.
 
 ric:enfermedades a skos:Concept.
 ric:neurodegenerativas a skos:Concept;
-    skos:broader ric:enfermedades.
+    rdfs:subClassOf ric:enfermedades.
 ric:alzheimer a skos:Concept;
-    skos:broader ric:neurodegenerativas.
+    rdfs:subClassOf ric:neurodegenerativas.
 ric:parkinson a skos:Concept;
-    skos:broader ric:neurodegenerativas.
+    rdfs:subClassOf ric:neurodegenerativas.
 
 ric:economía a skos:Concept.
 ric:crisis a skos:Concept.
@@ -37,17 +37,17 @@ ric:social a skos:Concept.
 
 ric:biología a skos:Concept.
 ric:biology a skos:Concept;
-    skos:exactMatch ric:biología.
+    owl:equivalentClass ric:biología.
 ric:bioinformática a skos:Concept;
-    skos:broader ric:biología.
+    rdfs:subClassOf ric:biología.
 ric:bioinformatics a skos:Concept;
-    skos:exactMatch ric:bioinformática.
+    owl:equivalentClass ric:bioinformática.
 
 ric:filogenética a skos:Concept.
 ric:phylogenetics a skos:Concept;
-    skos:exactMatch ric:filogenética.
+    owl:equivalentClass ric:filogenética.
 
 ric:informática a skos:Concept;
-    skos:broader ric:ingeniería.
+    rdfs:subClassOf ric:ingeniería.
 ric:computer a skos:Concept;
-    skos:exactMatch ric:informática.
+    owl:equivalentClass ric:informática.

@@ -108,18 +108,18 @@ public class SemanticGenerator {
 
                 // description
                 addProperty(xmlDoc, resource, FIELD_DESCRIPTION, "data", null);
-                addConcept(xmlDoc, resource, FIELD_DESCRIPTION, model);
+                addTheme(xmlDoc, resource, FIELD_DESCRIPTION, model);
 
                 // language
                 addProperty(xmlDoc, resource, FIELD_LANGUAGE, "language", null);
 
                 // subject
                 addProperty(xmlDoc, resource, FIELD_SUBJECT, "data", null);
-                addConcept(xmlDoc, resource, FIELD_SUBJECT, model);
+                addTheme(xmlDoc, resource, FIELD_SUBJECT, model);
 
                 // title
                 addProperty(xmlDoc, resource, FIELD_TITLE, "data", null);
-                addConcept(xmlDoc, resource, FIELD_TITLE, model);
+                addTheme(xmlDoc, resource, FIELD_TITLE, model);
 
                 // relation
 //                addProperty(xmlDoc, resource, FIELD_RELATION, "relation", XSDDatatype.XSDanyURI);
@@ -216,7 +216,7 @@ public class SemanticGenerator {
         }
     }
 
-    static private void addConcept(Document document, Resource resource, String tag, Model model) {
+    static private void addTheme(Document document, Resource resource, String tag, Model model) {
         NodeList list = document.getElementsByTagName(PREFIX_DC + tag);
         for (int i = 0; i < list.getLength(); i++) {
             String text = list.item(i).getTextContent().strip();
