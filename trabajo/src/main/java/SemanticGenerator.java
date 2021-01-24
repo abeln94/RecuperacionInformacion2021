@@ -79,8 +79,8 @@ public class SemanticGenerator {
         }
 
         // load the models
-        Model model = FileManager.get().loadModel(skosPath, "TURTLE");
-        model = model.add(FileManager.get().loadModel(owlPath, "TURTLE"));
+        Model model = FileManager.get().loadModel(owlPath, "TURTLE");
+        model = model.add(FileManager.get().loadModel(skosPath, "TURTLE"));
 
         // parse files
         Extractor extractor = new Extractor();
