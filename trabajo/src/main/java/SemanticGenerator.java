@@ -16,13 +16,18 @@ import tools.ArgsParser;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static indexfiles.parser.RecordsDcParser.*;
 
 public class SemanticGenerator {
 
+    // uris
     private static final Model m = ModelFactory.createDefaultModel();
     public static final String riUri = "http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#";
     public static final String ricUri = "http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#";
@@ -35,12 +40,11 @@ public class SemanticGenerator {
         return m.createProperty(ricUri, name);
     }
 
-
+    // arguments
     private static String rdfPath;
     private static String skosPath;
     private static String owlPath;
     private static String docsPath;
-
     private static Boolean test = false;
 
     public static void main(String[] args) throws FileNotFoundException {
@@ -53,6 +57,26 @@ public class SemanticGenerator {
                 .addRequired("-docs", "the folder with the files to parse", 1, v -> docsPath = v.get(0))
                 .addOptional("-test", "flag to try things", 0, v -> test = true)
                 .parse(args);
+
+        if (test) {
+            try {
+                // convert SKOS
+                String content = Files.readString(Path.of(owlPath));
+
+                Matcher m = Pattern.compile("ric:([^ .;]*)").matcher(content);
+                while (m.find()) {
+                    String original = m.group(1);
+                    if (original == null || original.isEmpty()) continue;
+                    String replacement = tokenizeString(new SimpleAnalyzer(), original).get(0);
+                    content = content.replaceAll(original, replacement);
+                }
+                Files.writeString(Path.of(owlPath), content);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return;
+        }
 
         // load the models
         Model model = FileManager.get().loadModel(skosPath, "TURTLE");

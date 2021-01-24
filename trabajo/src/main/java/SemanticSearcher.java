@@ -3,10 +3,10 @@ import org.apache.jena.query.text.EntityDefinition;
 import org.apache.jena.query.text.TextDatasetFactory;
 import org.apache.jena.query.text.TextIndexConfig;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.lucene.analysis.es.SpanishAnalyzer;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import tools.ArgsParser;
+import tools.CustomAnalyzer;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -28,15 +28,15 @@ public class SemanticSearcher {
                 .parse(args);
 
 
-        //definimos la configuración del repositorio indexado
+        // definimos la configuración del repositorio indexado
         EntityDefinition entDef = new EntityDefinition("uri", "data", SemanticGenerator.pRI("data").asNode());
         entDef.set("publisher", SemanticGenerator.pRI("publisher").asNode());
         TextIndexConfig config = new TextIndexConfig(entDef);
-        config.setAnalyzer(new SpanishAnalyzer());
-        config.setQueryAnalyzer(new SpanishAnalyzer());
+        config.setAnalyzer(new CustomAnalyzer(true));
+        config.setQueryAnalyzer(new CustomAnalyzer(true));
         config.setMultilingualSupport(true);
 
-        //definimos el repositorio indexado todo en memoria
+        // definimos el repositorio indexado todo en memoria
         Dataset ds1 = DatasetFactory.createGeneral();
         Directory dir = new RAMDirectory();
         Dataset ds = TextDatasetFactory.createLucene(ds1, dir, config);

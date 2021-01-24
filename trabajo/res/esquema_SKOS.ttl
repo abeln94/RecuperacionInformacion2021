@@ -16,7 +16,7 @@ ric:españa a skos:Concept.
 ric:huesca a skos:Concept;
     rdfs:subClassOf ric:españa.
 
-ric:XX a skos:Concept.
+ric:xx a skos:Concept.
 
 ric:ingeniería a skos:Concept.
 ric:biomédica a skos:Concept;
