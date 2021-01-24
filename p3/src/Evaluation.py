@@ -67,6 +67,13 @@ if __name__ == '__main__':
         relevant = set(qrels[(qrels[INFORMATION_NEED] == inf_need) & (qrels[RELEVANCY] == 1)][DOCUMENT_ID].values)
         notRelevant = all - relevant
 
+        # print relevant list
+        print(
+            inf_need, ":",
+            "".join(['1' if doc_id in relevant else '0' for doc_id in doc_ids]),
+            "(", len(relevant) - len(relevant.intersection(doc_ids)), ")"
+        )
+
         # default values in case doc_ids is empty
         p = 0
         r = 1
