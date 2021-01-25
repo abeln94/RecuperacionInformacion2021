@@ -43,6 +43,7 @@ public class SemanticSearcher {
 
 
         // cargamos el fichero deseado y lo almacenamos en el repositorio indexado
+        System.out.println("Loading model...");
         RDFDataMgr.read(ds.getDefaultModel(), rdfPath);
 
 

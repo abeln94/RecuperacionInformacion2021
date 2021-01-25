@@ -70,7 +70,7 @@ if __name__ == '__main__':
         # print relevant list
         print(
             inf_need, ":",
-            "".join(['1' if doc_id in relevant else '0' for doc_id in doc_ids]),
+            "".join(['R' if doc_id in relevant else 'n' for doc_id in doc_ids]),
             "(", len(relevant) - len(relevant.intersection(doc_ids)), ")"
         )
 

@@ -54,6 +54,8 @@ ric:computer a skos:Concept;
 
 ric:franco a skos:Concept;
     skos:broader ric:dictadura.
+ric:rivera a skos:Concept;
+    skos:broader ric:dictadura.
 
 ric:madrid a skos:Concept;
     skos:broader ric:españa.
