@@ -2,6 +2,11 @@
 @prefix	rdfs:	<http://www.w3.org/2000/01/rdf-schema#> .
 @prefix	ri:		<http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#> .
 @prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:    <http://www.w3.org/2002/07/owl#> .
+@prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
+
+
+###################### Modelo datos #####################
 
 ##########
 # clases #
@@ -72,6 +77,11 @@ ri:data     	a	rdf:Property;
 				rdfs:domain	ri:document;
 				rdfs:range	rdfs:Literal.
 
+# tiene temas
+ri:theme        a   owl:TransitiveProperty;
+				rdfs:domain	ri:document;
+				rdfs:range	skos:Concept.
+
 # está escrito en un idioma
 ri:language		a	rdf:Property;
 				rdfs:domain	ri:document;
@@ -114,3 +124,9 @@ ri:lastName		a	rdf:Property;
 				rdfs:domain	ri:person;
 				rdfs:range	rdfs:Literal;
 				rdfs:label	"https://es.wikipedia.org/wiki/Apellido".
+
+
+###################  reglas inferencia ###################
+
+skos:exactMatch rdfs:subPropertyOf  ri:theme.
+skos:broader    rdfs:subPropertyOf  ri:theme.

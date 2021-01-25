@@ -1,6 +1,4 @@
-@prefix	rdfs:   <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix skos:   <http://www.w3.org/2004/02/skos/core#> .
-@prefix owl:    <http://www.w3.org/2002/07/owl#> .
 @prefix	ric:    <http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#> .
 
 
@@ -10,86 +8,86 @@ ric:represión a skos:Concept.
 
 ric:españa a skos:Concept.
 ric:huesca a skos:Concept;
-    rdfs:subClassOf ric:españa.
+    skos:broader ric:españa.
 
 ric:xx a skos:Concept.
 
 ric:ingeniería a skos:Concept.
 ric:biomédica a skos:Concept;
-    rdfs:subClassOf ric:ingeniería.
+    skos:broader ric:ingeniería.
 
 ric:enfermedades a skos:Concept.
 ric:neurodegenerativas a skos:Concept;
-    rdfs:subClassOf ric:enfermedades.
+    skos:broader ric:enfermedades.
 ric:alzheimer a skos:Concept;
-    rdfs:subClassOf ric:neurodegenerativas.
+    skos:broader ric:neurodegenerativas.
 ric:parkinson a skos:Concept;
-    rdfs:subClassOf ric:neurodegenerativas.
+    skos:broader ric:neurodegenerativas.
 
 ric:economía a skos:Concept.
 ric:crisis a skos:Concept.
 ric:política a skos:Concept.
 ric:partidos a skos:Concept;
-    rdfs:subClassOf ric:política.
+    skos:broader ric:política.
 ric:social a skos:Concept.
 
 ric:biología a skos:Concept.
 ric:biology a skos:Concept;
-    owl:equivalentClass ric:biología.
+    skos:exactMatch ric:biología.
 ric:bioinformática a skos:Concept;
-    rdfs:subClassOf ric:biología.
+    skos:broader ric:biología.
 ric:bioinformatics a skos:Concept;
-    owl:equivalentClass ric:bioinformática.
+    skos:exactMatch ric:bioinformática.
 
 ric:filogenética a skos:Concept.
 ric:phylogenetics a skos:Concept;
-    owl:equivalentClass ric:filogenética.
+    skos:exactMatch ric:filogenética.
 
 ric:informática a skos:Concept;
-    rdfs:subClassOf ric:ingeniería.
+    skos:broader ric:ingeniería.
 ric:computer a skos:Concept;
-    owl:equivalentClass ric:informática.
+    skos:exactMatch ric:informática.
 
 ##########
 # extras #
 ##########
 
 ric:franco a skos:Concept;
-    rdfs:subClassOf ric:dictadura.
+    skos:broader ric:dictadura.
 
 ric:madrid a skos:Concept;
-    rdfs:subClassOf ric:españa.
+    skos:broader ric:españa.
 
 ric:esclerosis a skos:Concept;
-    rdfs:subClassOf ric:neurodegenerativas.
+    skos:broader ric:neurodegenerativas.
 
 ric:diversidad a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:género a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:salud a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:sexual a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:ambiental a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:financiera a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:consumidor a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:violencia a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:paz a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:vial a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 ric:educación a skos:Concept;
-    rdfs:subClassOf ric:social.
+    skos:broader ric:social.
 
 ric:organismos a skos:Concept;
-    rdfs:subClassOf ric:filogenética.
+    skos:broader ric:filogenética.
 
 ric:programa a skos:Concept;
-    rdfs:subClassOf ric:informática.
+    skos:broader ric:informática.
 ric:software a skos:Concept;
-    rdfs:subClassOf ric:informática.
+    skos:broader ric:informática.

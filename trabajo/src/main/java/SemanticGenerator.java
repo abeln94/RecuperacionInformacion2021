@@ -246,7 +246,7 @@ public class SemanticGenerator {
             String text = list.item(i).getTextContent().strip();
             for (String term : tokenizeString(new SimpleAnalyzer(), text)) {
                 if (model.containsResource(pRIC(term))) {
-                    resource.addProperty(RDF.type, pRIC(term));
+                    resource.addProperty(pRI("theme"), pRIC(term));
                 }
 //                resource.addProperty(pRI("data"), term);
             }
