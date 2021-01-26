@@ -61,7 +61,7 @@ public class SemanticSearcher {
                 query_string = "prefix ri: <http://rdf.unizar.es/recuperacion_informacion/grupo_110/modelo#> \n"
                         + "prefix ric: <http://rdf.unizar.es/recuperacion_informacion/grupo_110/conceptos#> \n"
                         + "prefix text: <http://jena.apache.org/text#> \n"
-                        + "prefix xsd: <http://www.w3.org/2001/XMLSchema#>"
+                        + "prefix xsd: <http://www.w3.org/2001/XMLSchema#> \n"
                         + query_string;
 
                 Query query = QueryFactory.create(query_string);
